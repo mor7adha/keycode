@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyCode | متجر الخدمات الرقمية المتكاملة</title>
+    <!-- Meta Tags for SEO -->
+    <meta name="description" content="متجر KeyCode للخدمات الرقمية. اشتراكات ChatGPT Plus, Gemini Pro, Grok, Canva Pro, CapCut Pro وتوثيق حسابات X، بالإضافة للخدمات الطلابية وتطوير الويب بأعلى جودة وأفضل الأسعار.">
+    <meta name="keywords" content="KeyCode, متجر خدمات رقمية, اشتراك ChatGPT, اشتراك Canva, توثيق حسابات X, خدمات طلابية, برمجة مواقع, Grok, Gemini Pro">
+    
+    <!-- Google Fonts: Cairo (Arabic) & Plus Jakarta Sans (English) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;850&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+
+    <!-- Header / Navbar -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <img src="logo.png" alt="KeyCode Logo" class="brand-logo" onerror="this.src='https://placehold.co/150x50/111827/06b6d4?text=KeyCode'">
+                <span class="brand-name">Key<span class="gradient-text">Code</span></span>
+            </div>
+            
+            <nav class="nav-menu" id="navMenu">
+                <a href="#hero" class="nav-link active" data-i18n="nav_home">الرئيسية</a>
+                <a href="#services" class="nav-link" data-i18n="nav_services">الخدمات</a>
+                <a href="#why-us" class="nav-link" data-i18n="nav_features">مميزاتنا</a>
+                <a href="#faqs" class="nav-link" data-i18n="nav_faqs">الأسئلة الشائعة</a>
+                <a href="#contact" class="nav-link" data-i18n="nav_contact">تواصل معنا</a>
+            </nav>
+
+            <div class="header-actions">
+                <button class="lang-toggle-btn" id="langToggle">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="langText">English</span>
+                </button>
+                
+                <button class="cart-toggle-btn" id="cartToggle">
+                    <i class="fa-solid fa-shopping-bag"></i>
+                    <span class="cart-badge" id="cartBadgeCount">0</span>
+                </button>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="badge-glow" data-i18n="hero_badge">✨ بوابتك للخدمات الرقمية الاحترافية</div>
+                <h1 class="hero-title">
+                    <span data-i18n="hero_title_1">ارتقِ بأعمالك ودراستك مع</span> 
+                    <span class="gradient-text glow-text">Key<span class="cyan-glow">Code</span></span>
+                </h1>
+                <p class="hero-desc" data-i18n="hero_description">
+                    نقدم لك اشتراكات الذكاء الاصطناعي الرسمية، وتوثيق الحسابات، والخدمات الطلابية والأكاديمية، بالإضافة لتصميم وبرمجة المواقع الإلكترونية بأعلى دقة واحترافية.
+                </p>
+                <div class="hero-ctas">
+                    <a href="#services" class="btn btn-primary" data-i18n="hero_cta_browse">تصفح الخدمات <i class="fa-solid fa-arrow-left"></i></a>
+                    <a href="https://wa.me/967784926052" target="_blank" class="btn btn-secondary">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span data-i18n="hero_cta_whatsapp">استشارة سريعة</span>
+                    </a>
+                </div>
+                
+                <!-- Simple Statistics Counter -->
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-num" data-val="1500">0</span><span class="stat-plus">+</span>
+                        <p class="stat-label" data-i18n="stat_clients">عميل سعيد</p>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num" data-val="99">0</span><span class="stat-plus">%</span>
+                        <p class="stat-label" data-i18n="stat_satisfaction">نسبة الرضا</p>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num" data-val="24">0</span><span class="stat-plus">/7</span>
+                        <p class="stat-label" data-i18n="stat_support">دعم فني متواصل</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <!-- Floating Neon Cards/Shapes representing services -->
+                <div class="floating-container">
+                    <div class="floating-card c1">
+                        <div class="card-icon-wrapper ai"><i class="fa-solid fa-robot"></i></div>
+                        <span class="card-title">ChatGPT Plus</span>
+                        <span class="card-tag">$8 / Month</span>
+                    </div>
+                    <div class="floating-card c2">
+                        <div class="card-icon-wrapper verify"><i class="fa-solid fa-certificate"></i></div>
+                        <span class="card-title">X Verification</span>
+                        <span class="card-tag">Official</span>
+                    </div>
+                    <div class="floating-card c3">
+                        <div class="card-icon-wrapper design"><i class="fa-solid fa-palette"></i></div>
+                        <span class="card-title">Canva Pro</span>
+                        <span class="card-tag">$3 / 2 Years</span>
+                    </div>
+                    <div class="floating-card c4">
+                        <div class="card-icon-wrapper web"><i class="fa-solid fa-code"></i></div>
+                        <span class="card-title">Web Design</span>
+                        <span class="card-tag">Premium</span>
+                    </div>
+                    <div class="main-glow-sphere"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="why-us" class="why-us-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle" data-i18n="why_subtitle">لماذا متجرنا؟</span>
+                <h2 class="section-title" data-i18n="why_title">لماذا يختار العملاء متجر KeyCode؟</h2>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon glow-purple">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 data-i18n="feat_speed_title">سرعة فائقة في التنفيذ</h3>
+                    <p data-i18n="feat_speed_desc">نقوم بتفعيل اشتراكاتك وتسليم خدماتك خلال دقائق معدودة من إتمام عملية الدفع.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon glow-cyan">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 data-i18n="feat_guarantee_title">ضمان كامل وأمان</h3>
+                    <p data-i18n="feat_guarantee_desc">جميع الاشتراكات والخدمات رسمية وقانونية 100% مع ضمان كامل طوال فترة الاشتراك.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon glow-pink">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 data-i18n="feat_support_title">دعم فني متميز</h3>
+                    <p data-i18n="feat_support_desc">فريق دعم متواجد على مدار الساعة عبر الواتساب والاتصال للإجابة على استفساراتك وحل مشاكلك.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle" data-i18n="services_subtitle">خدماتنا المتميزة</span>
+                <h2 class="section-title" data-i18n="services_title">اختر الخدمة التي تناسب احتياجاتك</h2>
+                
+                <!-- Category Filter Tabs -->
+                <div class="filter-tabs">
+                    <button class="filter-tab active" data-filter="all" data-i18n="filter_all">الكل</button>
+                    <button class="filter-tab" data-filter="ai-subscriptions" data-i18n="filter_ai">اشتراكات الذكاء الاصطناعي</button>
+                    <button class="filter-tab" data-filter="design-edit" data-i18n="filter_design">التصميم والمونتاج</button>
+                    <button class="filter-tab" data-filter="verification" data-i18n="filter_verify">توثيق الحسابات</button>
+                    <button class="filter-tab" data-filter="academic" data-i18n="filter_academic">الخدمات الطلابية</button>
+                    <button class="filter-tab" data-filter="web-dev" data-i18n="filter_web">تطوير الويب</button>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="services-grid" id="servicesGrid">
+                <!-- Services will be populated dynamically via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faqs" class="faqs-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle" data-i18n="faq_subtitle">الأسئلة الشائعة</span>
+                <h2 class="section-title" data-i18n="faq_title">لديك استفسار؟ ابحث عن الإجابة هنا</h2>
+            </div>
+            
+            <div class="faqs-list">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3 data-i18n="faq_q1">كيف يتم تفعيل اشتراكات الذكاء الاصطناعي (مثل ChatGPT و Grok)؟</h3>
+                        <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-i18n="faq_a1">بعد إتمام الدفع، نقوم بالتواصل معك عبر واتساب لتفعيل الاشتراك مباشرة على حسابك الشخصي أو تزويدك بحساب جاهز ومضمون وفقاً لنوع الخدمة التي اخترتها.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3 data-i18n="faq_q2">هل خدمات توثيق حسابات منصة X رسمية؟</h3>
+                        <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-i18n="faq_a2">نعم، نقدم خدمة مساعدة وإجراءات توثيق الحسابات بالكامل بطرق رسمية عبر إعداد الملف التعريفي والتحقق من الشروط وتقديم الطلب حتى الحصول على العلامة الزرقاء.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3 data-i18n="faq_q3">ما هي طرق الدفع المتوفرة في المتجر؟</h3>
+                        <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-i18n="faq_a3">نوفر عدة طرق دفع تناسب عملائنا الكرام، تشمل التحويلات البنكية المحلية (كريمي، يمن كور، النجم وغيرها) ومحفظات الجوال والعملات الرقمية. يتم التنسيق وتأكيد الدفع عبر الواتساب فور إرسال الطلب.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3 data-i18n="faq_q4">كيف يمكنني متابعة سير العمل في المشاريع والخدمات الطلابية وتطوير المواقع؟</h3>
+                        <span class="faq-icon"><i class="fa-solid fa-chevron-down"></i></span>
+                    </div>
+                    <div class="faq-answer">
+                        <p data-i18n="faq_a4">يتم تخصيص مطور أو باحث أكاديمي للتواصل معك مباشرة عبر الواتساب لمشاركة التحديثات خطوة بخطوة والتأكد من تلبية جميع متطلباتك وتعديلاتك بدقة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>
+                <i class="fa-solid fa-shopping-bag"></i> 
+                <span data-i18n="cart_title">سلة التسوق</span>
+            </h3>
+            <button class="close-cart-btn" id="closeCart"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        
+        <div class="cart-items-container" id="cartItemsContainer">
+            <!-- Dynamic cart items will appear here -->
+            <div class="empty-cart-message">
+                <i class="fa-solid fa-cart-plus"></i>
+                <p data-i18n="cart_empty">السلة فارغة حالياً. أضف بعض الخدمات!</p>
+            </div>
+        </div>
+        
+        <div class="cart-footer" id="cartFooter">
+            <div class="cart-summary">
+                <div class="summary-line">
+                    <span data-i18n="cart_subtotal">المجموع الفرعي:</span>
+                    <span id="cartSubtotal">$0.00</span>
+                </div>
+                <div class="summary-line total">
+                    <span data-i18n="cart_total">الإجمالي الكلي:</span>
+                    <span id="cartTotal">$0.00</span>
+                </div>
+            </div>
+            
+            <!-- Checkout Form inside Cart -->
+            <div class="checkout-form">
+                <div class="input-group">
+                    <label for="userName" data-i18n="form_name">الاسم الكريم:</label>
+                    <input type="text" id="userName" placeholder="مثال: أحمد علي" required>
+                </div>
+                <div class="input-group">
+                    <label for="paymentMethod" data-i18n="form_payment">طريقة الدفع المفضلة:</label>
+                    <select id="paymentMethod">
+                        <option value="kuraimi" data-i18n="pay_kuraimi">كريمي</option>
+                        <option value="jeeb" data-i18n="pay_jeeb">جيب</option>
+                        <option value="jawaly" data-i18n="pay_jawaly">جوالي</option>
+                        <option value="qasimi" data-i18n="pay_qasimi">القاسمي</option>
+                        <option value="onecash" data-i18n="pay_onecash">ون كاش</option>
+                        <option value="cash" data-i18n="pay_cash">كاش</option>
+                        <option value="binance" data-i18n="pay_binance">بايننس</option>
+                        <option value="bank_transfer" data-i18n="pay_bank_transfer">حوالات مصرفية</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary btn-checkout" id="btnCheckout">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span data-i18n="btn_complete_order">إرسال الطلب وتأكيده عبر الواتساب</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="cart-overlay" id="cartOverlay"></div>
+
+    <!-- Modals for Student / Custom Web Dev Service Form -->
+    <div class="modal" id="customServiceModal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="modalTitle">طلب خدمة مخصصة</h3>
+                <button class="close-modal-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="customServiceForm">
+                <input type="hidden" id="modalServiceType">
+                <div class="input-group">
+                    <label for="customName" data-i18n="form_name">الاسم الكريم:</label>
+                    <input type="text" id="customName" placeholder="الاسم الكامل" required>
+                </div>
+                <div class="input-group">
+                    <label for="customPhone" data-i18n="form_phone">رقم الهاتف للتواصل:</label>
+                    <input type="tel" id="customPhone" placeholder="+967..." required>
+                </div>
+                <div class="input-group">
+                    <label for="customDetails" id="customDetailsLabel">تفاصيل الطلب والمواصفات:</label>
+                    <textarea id="customDetails" rows="4" placeholder="يرجى كتابة تفاصيل الخدمة، الموعد النهائي للتسليم، وأي مواصفات خاصة..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-submit-modal">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span data-i18n="btn_submit_order">إرسال الطلب للواتساب</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact & Footer Section -->
+    <footer id="contact" class="main-footer">
+        <div class="footer-glow"></div>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="logo-area">
+                        <img src="logo.png" alt="KeyCode Logo" class="brand-logo" onerror="this.src='https://placehold.co/150x50/111827/06b6d4?text=KeyCode'">
+                        <span class="brand-name">Key<span class="gradient-text">Code</span></span>
+                    </div>
+                    <p class="footer-brand-desc" data-i18n="footer_desc">
+                        متجر KeyCode هو اختيارك الأول للخدمات الرقمية والحلول الطلابية والأكاديمية وتطوير المواقع بأحدث التقنيات وبأسعار مناسبة مع ضمان الخدمة.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/KeyCode" target="_blank" class="social-link facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/key_code_ye" target="_blank" class="social-link instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://wa.me/967784926052" target="_blank" class="social-link whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h3 data-i18n="footer_quick_links">روابط سريعة</h3>
+                    <ul>
+                        <li><a href="#hero" data-i18n="nav_home">الرئيسية</a></li>
+                        <li><a href="#services" data-i18n="nav_services">الخدمات والاشتراكات</a></li>
+                        <li><a href="#why-us" data-i18n="nav_features">لماذا نحن؟</a></li>
+                        <li><a href="#faqs" data-i18n="nav_faqs">الأسئلة الشائعة</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h3 data-i18n="footer_contact_info">معلومات الاتصال</h3>
+                    <ul class="contact-info-list">
+                        <li>
+                            <a href="https://wa.me/967784926052" target="_blank">
+                                <i class="fa-brands fa-whatsapp"></i>
+                                <span>+967 784 926 052</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+967778150247">
+                                <i class="fa-solid fa-phone"></i>
+                                <span>+967 778 150 247</span>
+                            </a>
+                        </li>
+                        <li>
+                            <span>
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span data-i18n="contact_address">اليمن، تقديم الخدمات عن بُعد لجميع الدول</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-developer">
+                    <span>Developed with 💜 by KeyCode Dev Team</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Files -->
+    <script src="app.js"></script>
+</body>
+</html>
