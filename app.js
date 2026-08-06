@@ -36,6 +36,8 @@ const translations = {
         filter_verify: "توثيق الحسابات",
         filter_academic: "الخدمات الطلابية",
         filter_web: "تطوير الويب",
+        filter_entertainment: "ترفيه",
+        filter_custom_services: "خدمات حسب الطلب",
         reviews_subtitle: "آراء العملاء",
         reviews_title: "ماذا يقولون عن خدمات KeyCode؟",
         review_1_text: `"خدمة سريعة جداً وموثوقة! قمت بشراء اشتراك ChatGPT Plus وتم التفعيل في أقل من 10 دقائق. الدعم الفني متعاون لأبعد الحدود."`,
@@ -72,6 +74,7 @@ const translations = {
         pay_cash: "كاش",
         pay_binance: "بايننس",
         pay_bank_transfer: "حوالات مصرفية",
+        pay_visa_mastercard: "فيزا / ماستركارد",
         btn_complete_order: "إرسال الطلب وتأكيده عبر الواتساب",
         btn_submit_order: "إرسال الطلب للواتساب",
         add_to_cart: "إضافة للسلة",
@@ -114,6 +117,8 @@ const translations = {
         filter_verify: "Verification",
         filter_academic: "Student Services",
         filter_web: "Web Development",
+        filter_entertainment: "Entertainment",
+        filter_custom_services: "Custom Services",
         reviews_subtitle: "Client Reviews",
         reviews_title: "What do they say about KeyCode?",
         review_1_text: `"Super fast and reliable service! Bought ChatGPT Plus and got activated in under 10 minutes. The support team is incredibly helpful."`,
@@ -150,6 +155,7 @@ const translations = {
         pay_cash: "Cash",
         pay_binance: "Binance (USDT)",
         pay_bank_transfer: "Bank Transfer",
+        pay_visa_mastercard: "Visa / Mastercard",
         btn_complete_order: "Send & Confirm Order via WhatsApp",
         btn_submit_order: "Send Request via WhatsApp",
         add_to_cart: "Add to Cart",
@@ -306,6 +312,46 @@ const servicesDatabase = [
     }
 ];
 
+// Keep a clean copy so the admin panel can recover from an accidentally empty saved list.
+const defaultServicesDatabase = JSON.parse(JSON.stringify(servicesDatabase));
+
+// Bridge data between index.html and admin.html even when the project is opened with file://.
+// window.name survives navigation in the same tab, unlike file-scoped localStorage in some browsers.
+function readProductsTransfer() {
+    try {
+        if (location.hash.startsWith("#products=")) {
+            const products = JSON.parse(decodeURIComponent(location.hash.slice(10)));
+            if (Array.isArray(products) && products.length) return products;
+        }
+        const transfer = JSON.parse(window.name || "null");
+        return transfer?.keycode === "products-transfer" && Array.isArray(transfer.products) && transfer.products.length
+            ? transfer.products
+            : null;
+    } catch (_) { return null; }
+}
+
+function writeProductsTransfer(products) {
+    window.name = JSON.stringify({ keycode: "products-transfer", products, updatedAt: Date.now() });
+}
+
+function productsNavigationUrl(page, products) {
+    return `${page}#products=${encodeURIComponent(JSON.stringify(products))}`;
+}
+
+// Apply product changes saved from the local admin panel.
+try {
+    const transferredServices = readProductsTransfer();
+    if (transferredServices) {
+        localStorage.setItem("keycode_products", JSON.stringify(transferredServices));
+    }
+    const managedServices = transferredServices || JSON.parse(localStorage.getItem("keycode_products") || "null");
+    if (Array.isArray(managedServices)) {
+        servicesDatabase.splice(0, servicesDatabase.length, ...managedServices);
+    }
+} catch (error) {
+    console.warn("Could not load managed products", error);
+}
+
 // --- Contacts Data ---
 const CONTACT_PHONE = "+967778150247";
 const WHATSAPP_PHONE = "967784926052";
@@ -349,6 +395,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartUI();
     initCounters();
     setupFAQAccordion();
+    if (location.hash === "#admin-recovery") {
+        const recoveryTarget = window.opener || (window.parent !== window ? window.parent : null);
+        if (recoveryTarget) recoveryTarget.postMessage({ type: "keycode-products-recovery", products: defaultServicesDatabase }, "*");
+    }
 });
 
 // --- Scroll Header Animation ---
@@ -416,9 +466,10 @@ function renderServices() {
     const isAr = currentLang === "ar";
     
     // Filter services
-    const filteredServices = activeCategory === "all" 
-        ? servicesDatabase 
-        : servicesDatabase.filter(s => s.category === activeCategory);
+    const enabledServices = servicesDatabase.filter(service => service.active !== false);
+    const filteredServices = activeCategory === "all"
+        ? enabledServices
+        : enabledServices.filter(service => service.category === activeCategory);
         
     filteredServices.forEach(service => {
         const card = document.createElement("div");
@@ -427,7 +478,10 @@ function renderServices() {
         
         const title = isAr ? service.title_ar : service.title_en;
         const desc = isAr ? service.desc_ar : service.desc_en;
-        const badge = isAr ? service.badge_ar : service.badge_en;
+        const isSoldOut = Number(service.stock) === 0;
+        const badge = isSoldOut
+            ? (isAr ? "نفد المخزون" : "Sold out")
+            : (isAr ? service.badge_ar : service.badge_en);
         
         // Build Dropdown Option markup if there are multiple or if it's not a quote service
         const isQuote = service.options[0].is_quote;
@@ -472,13 +526,14 @@ function renderServices() {
             }
 
             actionButtonsHTML = `
-                <button class="btn btn-primary" onclick="addToCart('${service.id}')">
+                <button class="btn btn-primary" onclick="addToCart('${service.id}')" ${isSoldOut ? "disabled" : ""}>
                     <i class="fa-solid fa-shopping-cart"></i>
-                    <span>${isAr ? "إضافة للسلة" : "Add to Cart"}</span>
+                    <span>${isSoldOut ? (isAr ? "نفد المخزون" : "Sold out") : (isAr ? "إضافة للسلة" : "Add to Cart")}</span>
                 </button>
             `;
         }
 
+        if (isSoldOut) card.classList.add("is-sold-out");
         card.innerHTML = `
             <div class="service-card-header">
                 <div class="service-icon ${service.icon_class}"><i class="fa-solid ${service.icon}"></i></div>
@@ -586,7 +641,7 @@ customServiceForm.addEventListener("submit", (e) => {
 // --- Shopping Cart Functions ---
 window.addToCart = function(serviceId) {
     const service = servicesDatabase.find(s => s.id === serviceId);
-    if (!service) return;
+    if (!service || Number(service.stock) === 0 || service.active === false) return;
     
     // Check if dropdown option selector exists in card UI to get chosen tier
     const cardEl = document.querySelector(`.service-card[data-id="${serviceId}"]`);
@@ -601,6 +656,13 @@ window.addToCart = function(serviceId) {
     // Check if item with this option already in cart
     const existingItemIdx = cart.findIndex(item => item.id === serviceId && item.optionIndex === selectedOptionIdx);
     
+    const stockLimit = Number.isFinite(Number(service.stock)) ? Number(service.stock) : Infinity;
+    const existingQuantity = existingItemIdx > -1 ? cart[existingItemIdx].quantity : 0;
+    if (existingQuantity >= stockLimit) {
+        alert(currentLang === "ar" ? "لا توجد كمية إضافية متاحة من هذا المنتج" : "No more stock is available for this product");
+        return;
+    }
+
     if (existingItemIdx > -1) {
         cart[existingItemIdx].quantity += 1;
     } else {
@@ -622,6 +684,50 @@ window.addToCart = function(serviceId) {
     updateCartUI();
     openCartSidebar();
 };
+
+window.openAdminPanel = function() {
+    let managedProducts = null;
+    try { managedProducts = JSON.parse(localStorage.getItem("keycode_products") || "null"); } catch (_) {}
+    if (!Array.isArray(managedProducts) || managedProducts.length === 0) {
+        managedProducts = defaultServicesDatabase;
+        localStorage.setItem("keycode_products", JSON.stringify(managedProducts));
+    }
+    writeProductsTransfer(managedProducts);
+    const portal = document.getElementById("adminPortal");
+    const frame = document.getElementById("adminPortalFrame");
+    portal.hidden = false;
+    document.body.style.overflow = "hidden";
+    frame.onload = () => frame.contentWindow.postMessage({ type: "keycode-admin-products", products: managedProducts }, "*");
+    if (!frame.getAttribute("src")) frame.src = "admin.html";
+    else frame.contentWindow.postMessage({ type: "keycode-admin-products", products: managedProducts }, "*");
+};
+
+window.addEventListener("message", event => {
+    if (event.data?.type === "keycode-products-update" && Array.isArray(event.data.products)) {
+        servicesDatabase.splice(0, servicesDatabase.length, ...event.data.products);
+        localStorage.setItem("keycode_products", JSON.stringify(event.data.products));
+        writeProductsTransfer(event.data.products);
+        renderServices();
+        return;
+    }
+    if (event.data?.type === "keycode-close-admin") {
+        document.getElementById("adminPortal").hidden = true;
+        document.body.style.overflow = "";
+        renderServices();
+    }
+});
+
+window.addEventListener("pageshow", () => {
+    const transferredServices = readProductsTransfer();
+    if (!transferredServices) return;
+    const currentSnapshot = JSON.stringify(servicesDatabase);
+    const incomingSnapshot = JSON.stringify(transferredServices);
+    if (currentSnapshot !== incomingSnapshot) {
+        servicesDatabase.splice(0, servicesDatabase.length, ...transferredServices);
+        localStorage.setItem("keycode_products", incomingSnapshot);
+        renderServices();
+    }
+});
 
 function saveCart() {
     localStorage.setItem("keycode_cart", JSON.stringify(cart));
@@ -733,7 +839,8 @@ btnCheckout.addEventListener("click", () => {
         onecash: { ar: "ون كاش", en: "One Cash" },
         cash: { ar: "كاش", en: "Cash" },
         binance: { ar: "بايننس (Binance)", en: "Binance (USDT)" },
-        bank_transfer: { ar: "حوالات مصرفية", en: "Bank Transfer" }
+        bank_transfer: { ar: "حوالات مصرفية", en: "Bank Transfer" },
+        visa_mastercard: { ar: "فيزا / ماستركارد", en: "Visa / Mastercard" }
     };
     
     if (paymentMethodsMap[paymentVal]) {

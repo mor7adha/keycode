@@ -27,7 +27,7 @@
     <header class="main-header">
         <div class="header-container">
             <div class="logo-area">
-                <img src="logo.png" alt="KeyCode Logo" class="brand-logo" onerror="this.src='https://placehold.co/150x50/111827/06b6d4?text=KeyCode'">
+                <span class="brand-mark"><img src="logo2.png" alt="KeyCode Logo" class="brand-logo"></span>
                 <span class="brand-name">Key<span class="gradient-text">Code</span></span>
             </div>
             
@@ -96,29 +96,29 @@
             </div>
             
             <div class="hero-visual">
-                <!-- Floating Neon Cards/Shapes representing services -->
-                <div class="floating-container">
-                    <div class="floating-card c1">
-                        <div class="card-icon-wrapper ai"><i class="fa-solid fa-robot"></i></div>
-                        <span class="card-title">ChatGPT Plus</span>
-                        <span class="card-tag">$8 / Month</span>
+                <div class="device-scene" aria-hidden="true">
+                    <div class="orbit orbit-one"></div>
+                    <div class="orbit orbit-two"></div>
+                    <div class="device-screen">
+                        <div class="screen-topbar">
+                            <span class="screen-brand">KEY<span>CODE</span></span>
+                            <span class="screen-dots"><i></i><i></i><i></i></span>
+                        </div>
+                        <div class="screen-body">
+                            <span class="screen-kicker">DIGITAL STUDIO</span>
+                            <strong>CREATE.<br>LAUNCH.<br><em>GROW.</em></strong>
+                            <span class="screen-line"></span>
+                        </div>
+                        <div class="code-panel">
+                            <span>&lt;creative /&gt;</span>
+                            <b>Premium digital<br>solutions</b>
+                            <i></i><i></i><i></i>
+                        </div>
                     </div>
-                    <div class="floating-card c2">
-                        <div class="card-icon-wrapper verify"><i class="fa-solid fa-certificate"></i></div>
-                        <span class="card-title">X Verification</span>
-                        <span class="card-tag">Official</span>
-                    </div>
-                    <div class="floating-card c3">
-                        <div class="card-icon-wrapper design"><i class="fa-solid fa-palette"></i></div>
-                        <span class="card-title">Canva Pro</span>
-                        <span class="card-tag">$3 / 2 Years</span>
-                    </div>
-                    <div class="floating-card c4">
-                        <div class="card-icon-wrapper web"><i class="fa-solid fa-code"></i></div>
-                        <span class="card-title">Web Design</span>
-                        <span class="card-tag">Premium</span>
-                    </div>
-                    <div class="main-glow-sphere"></div>
+                    <div class="device-base"><span></span></div>
+                    <div class="scene-chip chip-ai"><i class="fa-solid fa-robot"></i><span>AI TOOLS</span></div>
+                    <div class="scene-chip chip-design"><i class="fa-solid fa-wand-magic-sparkles"></i><span>DESIGN</span></div>
+                    <div class="scene-chip chip-code"><i class="fa-solid fa-code"></i><span>WEB DEV</span></div>
                 </div>
             </div>
         </div>
@@ -175,6 +175,8 @@
                     <button class="filter-tab" data-filter="verification" data-i18n="filter_verify">توثيق الحسابات</button>
                     <button class="filter-tab" data-filter="academic" data-i18n="filter_academic">الخدمات الطلابية</button>
                     <button class="filter-tab" data-filter="web-dev" data-i18n="filter_web">تطوير الويب</button>
+                    <button class="filter-tab" data-filter="entertainment" data-i18n="filter_entertainment">ترفيه</button>
+                    <button class="filter-tab" data-filter="custom-services" data-i18n="filter_custom_services">خدمات حسب الطلب</button>
                 </div>
             </div>
 
@@ -284,6 +286,7 @@
                         <option value="cash" data-i18n="pay_cash">كاش</option>
                         <option value="binance" data-i18n="pay_binance">بايننس</option>
                         <option value="bank_transfer" data-i18n="pay_bank_transfer">حوالات مصرفية</option>
+                        <option value="visa_mastercard" data-i18n="pay_visa_mastercard">فيزا / ماستركارد</option>
                     </select>
                 </div>
                 <button class="btn btn-primary btn-checkout" id="btnCheckout">
@@ -331,7 +334,7 @@
             <div class="footer-top">
                 <div class="footer-brand">
                     <div class="logo-area">
-                        <img src="logo.png" alt="KeyCode Logo" class="brand-logo" onerror="this.src='https://placehold.co/150x50/111827/06b6d4?text=KeyCode'">
+                        <span class="brand-mark"><img src="logo2.png" alt="KeyCode Logo" class="brand-logo"></span>
                         <span class="brand-name">Key<span class="gradient-text">Code</span></span>
                     </div>
                     <p class="footer-brand-desc" data-i18n="footer_desc">
@@ -381,11 +384,18 @@
 
             <div class="footer-bottom">
                 <div class="footer-developer">
-                    <span>Developed with 💜 by KeyCode Dev Team</span>
+                    <button type="button" class="developer-admin-link" onclick="openAdminPanel()" title="لوحة إدارة المنتجات">
+                        <span>Developed with 💜 by KeyCode Dev Team</span>
+                    </button>
                 </div>
             </div>
         </div>
     </footer>
+
+    <!-- Admin is hosted inside the storefront to keep one live source of product data. -->
+    <section class="admin-portal" id="adminPortal" hidden>
+        <iframe id="adminPortalFrame" title="لوحة إدارة KeyCode"></iframe>
+    </section>
 
     <!-- JS Files -->
     <script src="app.js"></script>

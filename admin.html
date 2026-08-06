@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>لوحة إدارة KeyCode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="admin.css">
+  <style>[hidden]{display:none!important}</style>
+</head>
+<body>
+  <section class="login-screen" id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <div class="admin-logo"><img src="logo2.png" alt="KeyCode"></div><span class="eyebrow">KEYCODE CONTROL</span>
+      <h1>تسجيل دخول الإدارة</h1><p>أدخل بيانات المسؤول للوصول إلى المنتجات.</p>
+      <label>اسم المستخدم<input id="loginUser" autocomplete="username" required></label>
+      <label>كلمة المرور<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+      <p class="login-error" id="loginError"></p>
+      <button class="primary-btn" type="submit">دخول <i class="fa-solid fa-arrow-left"></i></button>
+      <a href="index.html" class="back-link">العودة إلى المتجر</a>
+    </form>
+  </section>
+  <main class="dashboard" id="dashboard" hidden>
+    <aside class="sidebar">
+      <div class="side-brand"><div class="admin-logo small"><img src="logo2.png" alt=""></div><strong>KeyCode</strong></div>
+      <nav><button class="active"><i class="fa-solid fa-boxes-stacked"></i> المنتجات</button></nav>
+      <div class="side-bottom"><button id="previewStoreBtn"><i class="fa-solid fa-store"></i> عرض المتجر</button><button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button></div>
+    </aside>
+    <section class="content">
+      <header class="topbar"><div><span class="eyebrow">لوحة التحكم</span><h1>إدارة المنتجات</h1></div><button class="primary-btn" id="addProductBtn"><i class="fa-solid fa-plus"></i> إضافة منتج</button></header>
+      <div class="stats"><article><i class="fa-solid fa-box"></i><div><span>إجمالي المنتجات</span><strong id="totalProducts">0</strong></div></article><article><i class="fa-solid fa-circle-check"></i><div><span>متوفر</span><strong id="availableProducts">0</strong></div></article><article class="danger"><i class="fa-solid fa-triangle-exclamation"></i><div><span>نفد المخزون</span><strong id="soldOutProducts">0</strong></div></article></div>
+      <div class="toolbar"><input id="searchInput" type="search" placeholder="ابحث باسم المنتج..."><span id="saveStatus">جميع التغييرات محفوظة محليًا</span></div>
+      <div class="products-table-wrap"><table><thead><tr><th>المنتج</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="productsBody"></tbody></table><div class="empty-state" id="emptyState" hidden><p>لا توجد منتجات محفوظة في هذه الصفحة.</p><button class="primary-btn" type="button" onclick="recoverFromStore()"><i class="fa-solid fa-rotate-left"></i> استعادة المنتجات من المتجر</button></div></div>
+    </section>
+  </main>
+  <div class="modal" id="productModal" hidden>
+    <form class="modal-card" id="productForm">
+      <div class="modal-head"><div><span class="eyebrow">PRODUCT EDITOR</span><h2 id="modalHeading">إضافة منتج</h2></div><button type="button" class="icon-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button></div>
+      <input type="hidden" id="productId"><div class="form-grid">
+        <label>الاسم بالعربية<input id="titleAr" required></label><label>الاسم بالإنجليزية<input id="titleEn" required></label>
+        <label class="wide">الوصف بالعربية<textarea id="descAr" rows="3"></textarea></label><label class="wide">الوصف بالإنجليزية<textarea id="descEn" rows="3"></textarea></label>
+        <label>الفئة<select id="category"><option value="ai-subscriptions">اشتراكات الذكاء الاصطناعي</option><option value="design-edit">التصميم والمونتاج</option><option value="verification">توثيق الحسابات</option><option value="academic">الخدمات الطلابية</option><option value="web-dev">تطوير الويب</option><option value="entertainment">ترفيه</option><option value="custom-services">خدمات حسب الطلب</option></select></label>
+        <label>طريقة الطلب<select id="saleType"><option value="fixed">منتج بسعر ثابت</option><option value="quote">خدمة حسب الطلب / طلب تسعيرة</option></select></label>
+        <label>السعر بالدولار<input id="price" type="number" min="0" step="0.01" required></label><label>السعر السابق<input id="originalPrice" type="number" min="0" step="0.01"></label><label>الكمية<input id="stock" type="number" min="0" step="1" required></label>
+        <label>المدة بالعربية<input id="periodAr" placeholder="شهر"></label><label>المدة بالإنجليزية<input id="periodEn" placeholder="month"></label>
+        <label>الأيقونة<select id="icon"><option value="fa-box">منتج</option><option value="fa-robot">ذكاء اصطناعي</option><option value="fa-palette">تصميم</option><option value="fa-code">برمجة</option><option value="fa-certificate">توثيق</option><option value="fa-graduation-cap">تعليم</option></select></label>
+        <label class="toggle-label"><input id="active" type="checkbox" checked><span>إظهار المنتج في المتجر</span></label>
+      </div>
+      <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelModal">إلغاء</button><button class="primary-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> حفظ المنتج</button></div>
+    </form>
+  </div>
+  <section class="store-preview" id="storePreview" hidden>
+    <header class="preview-bar">
+      <button type="button" class="primary-btn" id="closePreview"><i class="fa-solid fa-arrow-right"></i> العودة إلى لوحة الإدارة</button>
+      <div><strong>معاينة المتجر</strong><span>التغييرات المحفوظة معروضة الآن</span></div>
+    </header>
+    <iframe id="storePreviewFrame" title="معاينة متجر KeyCode"></iframe>
+  </section>
+  <div class="toast" id="toast"></div><script src="admin.js"></script>
+  <style>
+    .store-preview{position:fixed;inset:0;z-index:100;background:#05090f;display:grid;grid-template-rows:68px 1fr}
+    .preview-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 22px;border-bottom:1px solid rgba(76,172,255,.2);background:#08121e}
+    .preview-bar>div{display:flex;align-items:center;gap:12px}.preview-bar span{color:#8291a3;font-size:.76rem}
+    .store-preview iframe{width:100%;height:100%;border:0;background:#030607}
+    @media(max-width:600px){.preview-bar{padding:8px 10px}.preview-bar span{display:none}.preview-bar .primary-btn{padding:10px 12px}}
+  </style>
+</body></html>
