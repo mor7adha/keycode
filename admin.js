@@ -1,9 +1,9 @@
 "use strict";
 
 const ADMIN_USER = "admin";
-const ADMIN_PASSWORD = "KeyCode@2026";
 const PRODUCTS_KEY = "keycode_products";
 const SESSION_KEY = "keycode_admin_session";
+const TOKEN_KEY = "keycode_admin_password";
 
 const $ = id => document.getElementById(id);
 const loginScreen = $("loginScreen");
@@ -35,36 +35,78 @@ function loadProducts() {
   } catch (_) { return []; }
 }
 
-function saveProducts(message = "تم حفظ التغييرات") {
+async function saveProducts(message = "تم حفظ التغييرات") {
   localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
   writeTransfer();
   if (window.parent !== window) window.parent.postMessage({ type:"keycode-products-update", products }, "*");
-  $("saveStatus").textContent = "تم الحفظ — " + new Date().toLocaleTimeString("ar", {hour:"2-digit", minute:"2-digit"});
-  showToast(message);
+  $("saveStatus").textContent = "جارٍ الحفظ على Netlify...";
   renderProducts();
+  try {
+    const response = await fetch("/api/products", {
+      method:"PUT",
+      headers:{ "content-type":"application/json", "x-admin-password":sessionStorage.getItem(TOKEN_KEY) || "" },
+      body:JSON.stringify({ products })
+    });
+    if (!response.ok) throw new Error((await response.json()).error || "Save failed");
+    $("saveStatus").textContent = "محفوظ على Netlify — " + new Date().toLocaleTimeString("ar", {hour:"2-digit", minute:"2-digit"});
+    showToast(message);
+  } catch (error) {
+    $("saveStatus").textContent = "تعذر الحفظ السحابي";
+    showToast(location.protocol === "file:" ? "الحفظ السحابي يعمل على رابط Netlify فقط" : `خطأ: ${error.message}`);
+  }
 }
 
-function showDashboard() {
+async function showDashboard() {
   loginScreen.hidden = true;
   dashboard.hidden = false;
   renderProducts();
+  await loadProductsFromServer();
 }
 
-if (sessionStorage.getItem(SESSION_KEY) === "active") showDashboard();
+async function loadProductsFromServer() {
+  try {
+    const response = await fetch("/api/products", { cache:"no-store" });
+    if (!response.ok) return;
+    const data = await response.json();
+    if (Array.isArray(data.products)) {
+      products = data.products;
+      localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+      writeTransfer();
+      renderProducts();
+      if (window.parent !== window) window.parent.postMessage({ type:"keycode-products-update", products }, "*");
+    } else if (products.length && sessionStorage.getItem(TOKEN_KEY)) {
+      await saveProducts("تم إنشاء مخزن المنتجات على Netlify");
+    }
+  } catch (_) {}
+}
 
-$("loginForm").addEventListener("submit", event => {
+if (sessionStorage.getItem(SESSION_KEY) === "active" && sessionStorage.getItem(TOKEN_KEY)) showDashboard();
+else sessionStorage.removeItem(SESSION_KEY);
+
+$("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
-  if ($("loginUser").value.trim() === ADMIN_USER && $("loginPassword").value === ADMIN_PASSWORD) {
+  const username = $("loginUser").value.trim();
+  const password = $("loginPassword").value;
+  if (username !== ADMIN_USER) {
+    $("loginError").textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
+    return;
+  }
+  $("loginError").textContent = "جارٍ التحقق...";
+  try {
+    const response = await fetch("/api/products", { method:"POST", headers:{ "x-admin-password":password } });
+    if (!response.ok) throw new Error("invalid");
     sessionStorage.setItem(SESSION_KEY, "active");
+    sessionStorage.setItem(TOKEN_KEY, password);
     $("loginError").textContent = "";
     showDashboard();
-  } else {
-    $("loginError").textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
+  } catch (_) {
+    $("loginError").textContent = "بيانات الدخول غير صحيحة، أو لم تتم إضافة ADMIN_PASSWORD في Netlify";
   }
 });
 
 $("logoutBtn").addEventListener("click", () => {
   sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
   location.reload();
 });
 

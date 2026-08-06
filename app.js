@@ -395,11 +395,27 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartUI();
     initCounters();
     setupFAQAccordion();
+    loadPublishedProducts();
     if (location.hash === "#admin-recovery") {
         const recoveryTarget = window.opener || (window.parent !== window ? window.parent : null);
         if (recoveryTarget) recoveryTarget.postMessage({ type: "keycode-products-recovery", products: defaultServicesDatabase }, "*");
     }
 });
+
+async function loadPublishedProducts() {
+    try {
+        const response = await fetch("/api/products", { headers: { accept: "application/json" }, cache: "no-store" });
+        if (!response.ok) return;
+        const data = await response.json();
+        if (!Array.isArray(data.products)) return;
+        servicesDatabase.splice(0, servicesDatabase.length, ...data.products);
+        localStorage.setItem("keycode_products", JSON.stringify(data.products));
+        writeProductsTransfer(data.products);
+        renderServices();
+    } catch (_) {
+        // Local file previews keep using the bundled/local product list.
+    }
+}
 
 // --- Scroll Header Animation ---
 window.addEventListener("scroll", () => {
