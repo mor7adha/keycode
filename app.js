@@ -481,8 +481,16 @@ function renderServices() {
     servicesGrid.innerHTML = "";
     const isAr = currentLang === "ar";
     
-    // Filter services
-    const enabledServices = servicesDatabase.filter(service => service.active !== false);
+    // Featured offers come first, while sold-out products always move to the end.
+    // Array position remains the manual order selected in the admin dashboard.
+    const enabledServices = servicesDatabase
+        .filter(service => service.active !== false)
+        .map((service, index) => ({ service, index }))
+        .sort((a, b) => {
+            const group = service => Number(service.stock) === 0 ? 2 : service.featured === true ? 0 : 1;
+            return group(a.service) - group(b.service) || a.index - b.index;
+        })
+        .map(item => item.service);
     const filteredServices = activeCategory === "all"
         ? enabledServices
         : enabledServices.filter(service => service.category === activeCategory);

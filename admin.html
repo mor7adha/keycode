@@ -30,13 +30,14 @@
     <section class="content">
       <header class="topbar"><div><span class="eyebrow">لوحة التحكم</span><h1>إدارة المنتجات</h1></div><button class="primary-btn" id="addProductBtn"><i class="fa-solid fa-plus"></i> إضافة منتج</button></header>
       <div class="stats"><article><i class="fa-solid fa-box"></i><div><span>إجمالي المنتجات</span><strong id="totalProducts">0</strong></div></article><article><i class="fa-solid fa-circle-check"></i><div><span>متوفر</span><strong id="availableProducts">0</strong></div></article><article class="danger"><i class="fa-solid fa-triangle-exclamation"></i><div><span>نفد المخزون</span><strong id="soldOutProducts">0</strong></div></article></div>
-      <div class="toolbar"><input id="searchInput" type="search" placeholder="ابحث باسم المنتج..."><span id="saveStatus">جميع التغييرات محفوظة محليًا</span></div>
-      <div class="products-table-wrap"><table><thead><tr><th>المنتج</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="productsBody"></tbody></table><div class="empty-state" id="emptyState" hidden><p>لا توجد منتجات محفوظة في هذه الصفحة.</p><button class="primary-btn" type="button" onclick="recoverFromStore()"><i class="fa-solid fa-rotate-left"></i> استعادة المنتجات من المتجر</button></div></div>
+      <div class="ordering-hint"><i class="fa-solid fa-arrow-down-wide-short" aria-hidden="true"></i><div><strong>ترتيب ظهور العروض</strong><span>العروض المميزة تظهر أولًا، ثم بقية المنتجات المتوفرة، والمنتجات النافدة تنتقل تلقائيًا إلى النهاية.</span></div></div>
+      <div class="toolbar"><input id="searchInput" type="search" placeholder="ابحث باسم المنتج..." aria-label="البحث باسم المنتج"><span id="saveStatus">جميع التغييرات محفوظة محليًا</span></div>
+      <div class="products-table-wrap"><table><thead><tr><th>المنتج</th><th>الفئة</th><th>السعر</th><th>المخزون</th><th>الحالة</th><th>الترتيب</th><th>الإجراءات</th></tr></thead><tbody id="productsBody"></tbody></table><div class="empty-state" id="emptyState" hidden><p>لا توجد منتجات محفوظة في هذه الصفحة.</p><button class="primary-btn" type="button" onclick="recoverFromStore()"><i class="fa-solid fa-rotate-left"></i> استعادة المنتجات من المتجر</button></div></div>
     </section>
   </main>
   <div class="modal" id="productModal" hidden>
     <form class="modal-card" id="productForm">
-      <div class="modal-head"><div><span class="eyebrow">PRODUCT EDITOR</span><h2 id="modalHeading">إضافة منتج</h2></div><button type="button" class="icon-btn" id="closeModal"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="modal-head"><div><span class="eyebrow">PRODUCT EDITOR</span><h2 id="modalHeading">إضافة منتج</h2></div><button type="button" class="icon-btn" id="closeModal" aria-label="إغلاق نافذة المنتج"><i class="fa-solid fa-xmark"></i></button></div>
       <input type="hidden" id="productId"><div class="form-grid">
         <label>الاسم بالعربية<input id="titleAr" required></label><label>الاسم بالإنجليزية<input id="titleEn" required></label>
         <label class="wide">الوصف بالعربية<textarea id="descAr" rows="3"></textarea></label><label class="wide">الوصف بالإنجليزية<textarea id="descEn" rows="3"></textarea></label>
@@ -46,6 +47,7 @@
         <label>المدة بالعربية<input id="periodAr" placeholder="شهر"></label><label>المدة بالإنجليزية<input id="periodEn" placeholder="month"></label>
         <label>الأيقونة<select id="icon"><option value="fa-box">منتج</option><option value="fa-robot">ذكاء اصطناعي</option><option value="fa-palette">تصميم</option><option value="fa-code">برمجة</option><option value="fa-certificate">توثيق</option><option value="fa-graduation-cap">تعليم</option></select></label>
         <label class="toggle-label"><input id="active" type="checkbox" checked><span>إظهار المنتج في المتجر</span></label>
+        <label class="toggle-label"><input id="featured" type="checkbox"><span>عرض مميز — يظهر في بداية المتجر</span></label>
       </div>
       <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelModal">إلغاء</button><button class="primary-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> حفظ المنتج</button></div>
     </form>
