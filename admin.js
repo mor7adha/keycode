@@ -2,7 +2,6 @@
 
 const DEFAULT_ADMIN_USER = "admin";
 const PRODUCTS_KEY = "keycode_products";
-const SESSION_KEY = "keycode_admin_session";
 const TOKEN_KEY = "keycode_admin_password";
 const USERNAME_KEY = "keycode_admin_username";
 
@@ -99,30 +98,13 @@ async function loadProductsFromServer() {
 }
 
 function clearAdminSession() {
-  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem("keycode_admin_session");
   sessionStorage.removeItem(USERNAME_KEY);
   sessionStorage.removeItem(TOKEN_KEY);
 }
 
-async function restoreAdminSession() {
-  const password = sessionStorage.getItem(TOKEN_KEY);
-  if (sessionStorage.getItem(SESSION_KEY) !== "active" || !password) {
-    clearAdminSession();
-    return;
-  }
-  const username = sessionStorage.getItem(USERNAME_KEY) || DEFAULT_ADMIN_USER;
-  try {
-    const response = await fetch("/api/products", { method:"POST", headers:{ "x-admin-username":username, "x-admin-password":password } });
-    if (!response.ok) throw new Error("invalid session");
-    sessionStorage.setItem(USERNAME_KEY, username);
-    showDashboard();
-  } catch (_) {
-    clearAdminSession();
-    $("loginError").textContent = "انتهت جلسة الإدارة، سجّل الدخول مرة أخرى";
-  }
-}
-
-restoreAdminSession();
+// Require explicit authentication every time the admin page is opened or refreshed.
+clearAdminSession();
 
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
@@ -133,10 +115,10 @@ $("loginForm").addEventListener("submit", async event => {
     const response = await fetch("/api/products", { method:"POST", headers:{ "x-admin-username":username, "x-admin-password":password } });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "invalid");
-    sessionStorage.setItem(SESSION_KEY, "active");
     sessionStorage.setItem(USERNAME_KEY, data.username || username);
     sessionStorage.setItem(TOKEN_KEY, password);
     $("loginError").textContent = "";
+    $("loginForm").reset();
     showDashboard();
   } catch (_) {
     $("loginError").textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
