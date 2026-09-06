@@ -19,3 +19,14 @@
 .icon-btn.feature.active{background:#ffbd2e18;color:#ffd265}
 @media(max-width:480px){.ordering-hint{align-items:flex-start}.ordering-hint span{font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){.icon-btn,.toast{transition:none}.icon-btn:hover:not(:disabled){transform:none}}
+.credentials-card{width:min(560px,100%)}
+.security-note{display:flex;align-items:flex-start;gap:12px;margin:22px 0 4px;padding:14px 16px;border:1px solid rgba(92,211,255,.18);border-radius:14px 5px;background:rgba(92,211,255,.065)}
+.security-note>i{margin-top:4px;color:var(--cyan)}
+.security-note p{margin:0}.security-note strong,.security-note span{display:block}.security-note strong{font-size:.85rem}.security-note span{margin-top:3px;color:var(--muted);font-size:.75rem;line-height:1.7}
+.credentials-fields label{display:grid;gap:7px;margin-top:16px;color:#b9c7d7;font-size:.83rem;font-weight:600}
+.credentials-fields small{color:var(--muted);font-size:.69rem;font-weight:400;line-height:1.6}
+.credentials-fields input[dir="ltr"]{text-align:left}
+.credentials-fields input[aria-invalid="true"]{border-color:var(--danger);box-shadow:0 0 0 3px rgba(255,101,117,.12)}
+.show-passwords{display:flex!important;align-items:center;gap:9px;cursor:pointer}.show-passwords input{width:auto}
+.form-error{min-height:24px;margin:12px 0 0;color:var(--danger);font-size:.78rem;line-height:1.7}
+@media(max-width:480px){.side-bottom button{display:flex;width:44px;height:44px;justify-content:center;padding:0;font-size:0}.side-bottom button i{font-size:1rem}.credentials-card{padding:22px 18px}}

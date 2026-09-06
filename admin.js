@@ -1,14 +1,16 @@
 "use strict";
 
-const ADMIN_USER = "admin";
+const DEFAULT_ADMIN_USER = "admin";
 const PRODUCTS_KEY = "keycode_products";
 const SESSION_KEY = "keycode_admin_session";
 const TOKEN_KEY = "keycode_admin_password";
+const USERNAME_KEY = "keycode_admin_username";
 
 const $ = id => document.getElementById(id);
 const loginScreen = $("loginScreen");
 const dashboard = $("dashboard");
 const modal = $("productModal");
+const credentialsModal = $("credentialsModal");
 let products = loadProducts();
 let saveQueue = Promise.resolve();
 let saveRevision = 0;
@@ -50,7 +52,11 @@ function saveProducts(message = "تم حفظ التغييرات") {
     try {
       const response = await fetch("/api/products", {
         method:"PUT",
-        headers:{ "content-type":"application/json", "x-admin-password":sessionStorage.getItem(TOKEN_KEY) || "" },
+        headers:{
+          "content-type":"application/json",
+          "x-admin-username":sessionStorage.getItem(USERNAME_KEY) || DEFAULT_ADMIN_USER,
+          "x-admin-password":sessionStorage.getItem(TOKEN_KEY) || ""
+        },
         body:snapshot
       });
       if (!response.ok) throw new Error((await response.json()).error || "Save failed");
@@ -92,34 +98,144 @@ async function loadProductsFromServer() {
   } catch (_) {}
 }
 
-if (sessionStorage.getItem(SESSION_KEY) === "active" && sessionStorage.getItem(TOKEN_KEY)) showDashboard();
-else sessionStorage.removeItem(SESSION_KEY);
+function clearAdminSession() {
+  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(USERNAME_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
+}
+
+async function restoreAdminSession() {
+  const password = sessionStorage.getItem(TOKEN_KEY);
+  if (sessionStorage.getItem(SESSION_KEY) !== "active" || !password) {
+    clearAdminSession();
+    return;
+  }
+  const username = sessionStorage.getItem(USERNAME_KEY) || DEFAULT_ADMIN_USER;
+  try {
+    const response = await fetch("/api/products", { method:"POST", headers:{ "x-admin-username":username, "x-admin-password":password } });
+    if (!response.ok) throw new Error("invalid session");
+    sessionStorage.setItem(USERNAME_KEY, username);
+    showDashboard();
+  } catch (_) {
+    clearAdminSession();
+    $("loginError").textContent = "انتهت جلسة الإدارة، سجّل الدخول مرة أخرى";
+  }
+}
+
+restoreAdminSession();
 
 $("loginForm").addEventListener("submit", async event => {
   event.preventDefault();
   const username = $("loginUser").value.trim();
   const password = $("loginPassword").value;
-  if (username !== ADMIN_USER) {
-    $("loginError").textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
-    return;
-  }
   $("loginError").textContent = "جارٍ التحقق...";
   try {
-    const response = await fetch("/api/products", { method:"POST", headers:{ "x-admin-password":password } });
-    if (!response.ok) throw new Error("invalid");
+    const response = await fetch("/api/products", { method:"POST", headers:{ "x-admin-username":username, "x-admin-password":password } });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "invalid");
     sessionStorage.setItem(SESSION_KEY, "active");
+    sessionStorage.setItem(USERNAME_KEY, data.username || username);
     sessionStorage.setItem(TOKEN_KEY, password);
     $("loginError").textContent = "";
     showDashboard();
   } catch (_) {
-    $("loginError").textContent = "بيانات الدخول غير صحيحة، أو لم تتم إضافة ADMIN_PASSWORD في Netlify";
+    $("loginError").textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
   }
 });
 
 $("logoutBtn").addEventListener("click", () => {
-  sessionStorage.removeItem(SESSION_KEY);
-  sessionStorage.removeItem(TOKEN_KEY);
+  clearAdminSession();
   location.reload();
+});
+
+function openCredentialsModal() {
+  $("credentialsForm").reset();
+  $("newUsername").value = sessionStorage.getItem(USERNAME_KEY) || DEFAULT_ADMIN_USER;
+  $("credentialsError").textContent = "";
+  credentialsModal.hidden = false;
+  requestAnimationFrame(() => $("currentPassword").focus());
+}
+
+function closeCredentialsModal() {
+  credentialsModal.hidden = true;
+  $("credentialsForm").reset();
+  ["currentPassword", "newPassword", "confirmPassword"].forEach(id => { $(id).type = "password"; });
+  $("credentialsError").textContent = "";
+}
+
+$("credentialsBtn").addEventListener("click", openCredentialsModal);
+$("closeCredentialsModal").addEventListener("click", closeCredentialsModal);
+$("cancelCredentialsModal").addEventListener("click", closeCredentialsModal);
+credentialsModal.addEventListener("click", event => { if (event.target === credentialsModal) closeCredentialsModal(); });
+
+$("showCredentialsPasswords").addEventListener("change", event => {
+  const type = event.target.checked ? "text" : "password";
+  ["currentPassword", "newPassword", "confirmPassword"].forEach(id => { $(id).type = type; });
+});
+
+$("currentPassword").addEventListener("input", () => $("currentPassword").removeAttribute("aria-invalid"));
+$("confirmPassword").addEventListener("input", () => {
+  if ($("confirmPassword").value === $("newPassword").value) {
+    $("confirmPassword").removeAttribute("aria-invalid");
+    if ($("credentialsError").textContent === "كلمتا المرور الجديدتان غير متطابقتين") $("credentialsError").textContent = "";
+  }
+});
+
+$("credentialsForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const username = $("newUsername").value.trim();
+  const currentPassword = $("currentPassword").value;
+  const password = $("newPassword").value;
+  const confirmPassword = $("confirmPassword").value;
+  const error = $("credentialsError");
+  const button = $("saveCredentialsBtn");
+  let responseStatus = 0;
+
+  error.textContent = "";
+  $("currentPassword").removeAttribute("aria-invalid");
+  if (password !== confirmPassword) {
+    error.textContent = "كلمتا المرور الجديدتان غير متطابقتين";
+    $("confirmPassword").setAttribute("aria-invalid", "true");
+    $("confirmPassword").focus();
+    return;
+  }
+  $("confirmPassword").removeAttribute("aria-invalid");
+  button.disabled = true;
+  button.setAttribute("aria-busy", "true");
+  button.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جارٍ الحفظ...</span>';
+
+  try {
+    const response = await fetch("/api/products", {
+      method:"PATCH",
+      headers:{
+        "content-type":"application/json",
+        "x-admin-username":sessionStorage.getItem(USERNAME_KEY) || DEFAULT_ADMIN_USER,
+        "x-admin-password":currentPassword
+      },
+      body:JSON.stringify({ username, password })
+    });
+    responseStatus = response.status;
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "تعذر تغيير بيانات الدخول");
+    sessionStorage.setItem(USERNAME_KEY, data.username || username);
+    sessionStorage.setItem(TOKEN_KEY, password);
+    closeCredentialsModal();
+    showToast("تم تغيير اسم المستخدم وكلمة المرور بنجاح");
+  } catch (requestError) {
+    error.textContent = requestError.message;
+    if (responseStatus === 401) {
+      $("currentPassword").setAttribute("aria-invalid", "true");
+      $("currentPassword").focus();
+    }
+  } finally {
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+    button.innerHTML = '<i class="fa-solid fa-floppy-disk"></i><span>حفظ بيانات الدخول</span>';
+  }
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && !credentialsModal.hidden) closeCredentialsModal();
 });
 
 function openStorePreview() {

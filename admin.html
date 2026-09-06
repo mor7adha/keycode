@@ -16,7 +16,7 @@
       <h1>تسجيل دخول الإدارة</h1><p>أدخل بيانات المسؤول للوصول إلى المنتجات.</p>
       <label>اسم المستخدم<input id="loginUser" autocomplete="username" required></label>
       <label>كلمة المرور<input id="loginPassword" type="password" autocomplete="current-password" required></label>
-      <p class="login-error" id="loginError"></p>
+      <p class="login-error" id="loginError" role="alert" aria-live="polite"></p>
       <button class="primary-btn" type="submit">دخول <i class="fa-solid fa-arrow-left"></i></button>
       <a href="index.html" class="back-link">العودة إلى المتجر</a>
     </form>
@@ -25,7 +25,7 @@
     <aside class="sidebar">
       <div class="side-brand"><div class="admin-logo small"><img src="logo2.png" alt=""></div><strong>KeyCode</strong></div>
       <nav><button class="active"><i class="fa-solid fa-boxes-stacked"></i> المنتجات</button></nav>
-      <div class="side-bottom"><button id="previewStoreBtn"><i class="fa-solid fa-store"></i> عرض المتجر</button><button id="logoutBtn"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button></div>
+      <div class="side-bottom"><button id="credentialsBtn" aria-label="تغيير بيانات الدخول"><i class="fa-solid fa-user-shield"></i> بيانات الدخول</button><button id="previewStoreBtn" aria-label="عرض المتجر"><i class="fa-solid fa-store"></i> عرض المتجر</button><button id="logoutBtn" aria-label="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button></div>
     </aside>
     <section class="content">
       <header class="topbar"><div><span class="eyebrow">لوحة التحكم</span><h1>إدارة المنتجات</h1></div><button class="primary-btn" id="addProductBtn"><i class="fa-solid fa-plus"></i> إضافة منتج</button></header>
@@ -52,6 +52,21 @@
       <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelModal">إلغاء</button><button class="primary-btn" type="submit"><i class="fa-solid fa-floppy-disk"></i> حفظ المنتج</button></div>
     </form>
   </div>
+  <div class="modal" id="credentialsModal" hidden>
+    <form class="modal-card credentials-card" id="credentialsForm">
+      <div class="modal-head"><div><span class="eyebrow">SECURITY SETTINGS</span><h2>تغيير بيانات الدخول</h2></div><button type="button" class="icon-btn" id="closeCredentialsModal" aria-label="إغلاق إعدادات بيانات الدخول"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="security-note"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i><p><strong>بياناتك محمية</strong><span>بعد الحفظ، استخدم اسم المستخدم وكلمة المرور الجديدين في المرة القادمة.</span></p></div>
+      <div class="credentials-fields">
+        <label>اسم المستخدم الجديد<input id="newUsername" name="username" dir="ltr" autocomplete="username" minlength="3" maxlength="32" pattern="[A-Za-z0-9._-]{3,32}" required><small>استخدم أحرفًا إنجليزية أو أرقامًا أو النقطة والشرطة فقط.</small></label>
+        <label>كلمة المرور الحالية<input id="currentPassword" name="current-password" type="password" autocomplete="current-password" required></label>
+        <label>كلمة المرور الجديدة<input id="newPassword" name="new-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><small>8 أحرف على الأقل، ويفضل مزج الحروف والأرقام والرموز.</small></label>
+        <label>تأكيد كلمة المرور الجديدة<input id="confirmPassword" name="confirm-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required></label>
+        <label class="show-passwords"><input id="showCredentialsPasswords" type="checkbox"><span>إظهار كلمات المرور</span></label>
+      </div>
+      <p class="form-error" id="credentialsError" role="alert" aria-live="polite"></p>
+      <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelCredentialsModal">إلغاء</button><button class="primary-btn" id="saveCredentialsBtn" type="submit"><i class="fa-solid fa-floppy-disk"></i><span>حفظ بيانات الدخول</span></button></div>
+    </form>
+  </div>
   <section class="store-preview" id="storePreview" hidden>
     <header class="preview-bar">
       <button type="button" class="primary-btn" id="closePreview"><i class="fa-solid fa-arrow-right"></i> العودة إلى لوحة الإدارة</button>
@@ -59,7 +74,7 @@
     </header>
     <iframe id="storePreviewFrame" title="معاينة متجر KeyCode"></iframe>
   </section>
-  <div class="toast" id="toast"></div><script src="admin.js"></script>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div><script src="admin.js"></script>
   <style>
     .store-preview{position:fixed;inset:0;z-index:100;background:#05090f;display:grid;grid-template-rows:68px 1fr}
     .preview-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 22px;border-bottom:1px solid rgba(76,172,255,.2);background:#08121e}
