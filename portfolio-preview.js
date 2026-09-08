@@ -42,9 +42,7 @@ function render() {
         category.textContent = copy.category;
         const title = document.createElement("h3");
         title.textContent = copy.title;
-        const description = document.createElement("p");
-        description.textContent = copy.description;
-        body.append(category, title, description);
+        body.append(category, title);
         const link = document.createElement("a");
         link.className = "work-card-link";
         link.href = `works.html#${encodeURIComponent(project.id)}`;

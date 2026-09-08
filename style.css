@@ -2097,8 +2097,9 @@ html[lang="ar"] .hero-title .gradient-text {
 .work-preview-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 22px;
-    min-height: 410px;
+    gap: 18px;
+    max-width: 1000px;
+    margin-inline: auto;
 }
 
 .work-preview-card,
@@ -2126,7 +2127,8 @@ html[lang="ar"] .hero-title .gradient-text {
 .work-preview-media {
     position: relative;
     overflow: hidden;
-    aspect-ratio: 16 / 10;
+    height: 150px;
+    flex: 0 0 auto;
     border-bottom: 1px solid rgba(255, 255, 255, .07);
     background: #07101c;
 }
@@ -2139,6 +2141,13 @@ html[lang="ar"] .hero-title .gradient-text {
 }
 
 .work-preview-card:hover .work-preview-media img { transform: scale(1.035); }
+
+.work-preview-media .work-card-visual { padding: 16px; }
+.work-preview-media .work-card-visual strong {
+    left: 16px;
+    bottom: 12px;
+    font-size: 3rem;
+}
 
 .work-card-visual {
     position: absolute;
@@ -2206,7 +2215,8 @@ html[lang="ar"] .hero-title .gradient-text {
     flex: 1;
     flex-direction: column;
     align-items: flex-start;
-    padding: 24px;
+    min-width: 0;
+    padding: 14px 18px 8px;
 }
 
 .work-preview-body > span {
@@ -2217,21 +2227,10 @@ html[lang="ar"] .hero-title .gradient-text {
 }
 
 .work-preview-body h3 {
-    margin: 11px 0 9px;
+    margin: 6px 0 4px;
     color: #f4f9ff;
-    font-size: 1.12rem;
+    font-size: 1rem;
     line-height: 1.6;
-}
-
-.work-preview-body p {
-    display: -webkit-box;
-    overflow: hidden;
-    margin-bottom: 18px;
-    color: #96a5b3;
-    font-size: .86rem;
-    line-height: 1.8;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
 }
 
 .work-card-link {
@@ -2247,7 +2246,7 @@ html[lang="ar"] .hero-title .gradient-text {
 .work-card-link:hover { color: #fff; }
 
 .work-preview-skeleton {
-    min-height: 410px;
+    min-height: 290px;
     background: linear-gradient(105deg, rgba(10, 20, 31, .9) 30%, rgba(28, 49, 69, .8) 45%, rgba(10, 20, 31, .9) 60%);
     background-size: 220% 100%;
     animation: workSkeleton 1.4s ease-in-out infinite;
@@ -2257,7 +2256,8 @@ html[lang="ar"] .hero-title .gradient-text {
 
 @media (max-width: 900px) {
     .work-preview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .work-preview-card:last-child { display: none; }
+    .work-preview-card:last-child,
+    .work-preview-skeleton:last-child { display: none; }
 }
 
 @media (max-width: 640px) {
@@ -2265,8 +2265,22 @@ html[lang="ar"] .hero-title .gradient-text {
     .work-preview-heading { align-items: stretch; flex-direction: column; margin-bottom: 28px; }
     .work-preview-all { width: 100%; }
     .work-preview-grid { grid-template-columns: 1fr; min-height: 0; }
-    .work-preview-card:last-child { display: flex; }
-    .work-preview-skeleton { min-height: 390px; }
+    .work-preview-card { flex-direction: row; }
+    .work-preview-card:last-child,
+    .work-preview-skeleton:last-child { display: flex; }
+    .work-preview-media {
+        width: 96px;
+        height: auto;
+        align-self: stretch;
+        border-bottom: 0;
+        border-inline-end: 1px solid rgba(255, 255, 255, .07);
+    }
+    .work-preview-media img { position: absolute; inset: 0; }
+    .work-preview-media .work-card-visual { padding: 10px; }
+    .work-preview-media .work-card-visual span { font-size: .6rem; letter-spacing: 0; }
+    .work-preview-media .work-card-visual strong { left: 10px; font-size: 2.2rem; }
+    .work-preview-body { padding: 12px 14px 6px; }
+    .work-preview-skeleton { min-height: 150px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
