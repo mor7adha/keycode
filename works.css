@@ -309,9 +309,14 @@ html[dir="ltr"] .contact-code { left: auto; right: 70px; }
 .portfolio-footer-bottom a:hover { color: #71d0ff; }
 
 .project-dialog {
-    width: min(820px, calc(100% - 32px));
-    max-height: 90vh;
-    overflow: auto;
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(720px, calc(100% - 40px));
+    max-width: none;
+    max-height: calc(100vh - 48px);
+    max-height: calc(100dvh - 48px);
+    overflow: hidden;
     padding: 0;
     border: 1px solid rgba(71, 162, 247, .27);
     border-radius: 24px 8px 24px 8px;
@@ -319,14 +324,31 @@ html[dir="ltr"] .contact-code { left: auto; right: 70px; }
     color: #f2f7fb;
     box-shadow: 0 40px 120px rgba(0, 0, 0, .72);
 }
+.project-dialog[open] { display: flex; flex-direction: column; }
+.project-dialog-header {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(71, 162, 247, .16);
+    background: #0d1927;
+    color: #cbdde9;
+    font-size: .85rem;
+    font-weight: 700;
+}
+#dialogContent { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 .project-dialog::backdrop { background: rgba(0, 4, 10, .8); backdrop-filter: blur(8px); }
-.project-dialog-close { position: absolute; top: 14px; left: 14px; z-index: 3; display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid rgba(255, 255, 255, .18); border-radius: 14px 5px 14px 5px; background: rgba(5, 13, 21, .9); color: #f6fbff; cursor: pointer; }
-html[dir="ltr"] .project-dialog-close { left: auto; right: 14px; }
-.project-dialog-image { width: 100%; max-height: 450px; object-fit: contain; background: #050b12; }
-.project-dialog-placeholder { position: relative; min-height: 320px; }
-.project-dialog-body { padding: 34px; }
-.project-dialog-body h2 { margin: 11px 0; font-size: clamp(1.7rem, 4vw, 2.6rem); line-height: 1.45; }
+.project-dialog-close { display: grid; flex: 0 0 44px; width: 44px; height: 44px; place-items: center; border: 1px solid rgba(255, 255, 255, .18); border-radius: 12px; background: rgba(5, 13, 21, .9); color: #f6fbff; cursor: pointer; transition: background .2s ease, border-color .2s ease; }
+.project-dialog-close:hover { background: #19334b; border-color: #6bcaff; }
+.project-dialog-image { display: block; width: 100%; height: 240px; object-fit: contain; background: #050b12; }
+.project-dialog-placeholder { position: relative; min-height: 140px; }
+.project-dialog-placeholder b { font-size: 2.8rem; bottom: 14px; }
+.project-dialog-body { padding: 26px 30px 30px; overflow-wrap: anywhere; }
+.project-dialog-body h2 { margin: 10px 0 14px; font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.55; }
 .project-dialog-body > p { color: #a1afba; line-height: 2; white-space: pre-wrap; }
+.project-dialog-body > .btn { margin-top: 8px; }
 .project-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0; }
 .project-tags span { padding: 6px 11px; border: 1px solid rgba(64, 159, 246, .17); border-radius: 8px 3px 8px 3px; background: rgba(43, 130, 220, .09); color: #a7dcf8; font-size: .7rem; }
 
@@ -388,7 +410,13 @@ html[dir="ltr"] .project-dialog-close { left: auto; right: 14px; }
     .portfolio-values { flex-direction: column; }
     .portfolio-contact-wrap { padding-bottom: 72px; }
     .portfolio-footer-bottom { flex-direction: column; text-align: center; }
-    .project-dialog-body { padding: 26px 22px; }
+    .project-dialog { width: calc(100% - 24px); max-height: calc(100vh - 24px); max-height: calc(100dvh - 24px); border-radius: 18px; }
+    .project-dialog-header { padding: 10px 16px; }
+    .project-dialog-image { height: 180px; }
+    .project-dialog-placeholder { min-height: 112px; padding: 16px; }
+    .project-dialog-placeholder b { left: auto; right: 20px; font-size: 2.5rem; }
+    .project-dialog-body { padding: 20px; }
+    .project-dialog-body > .btn { width: 100%; }
 }
 
 @media (max-width: 380px) {
@@ -402,6 +430,7 @@ html[dir="ltr"] .project-dialog-close { left: auto; right: 14px; }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .portfolio-project-card,
+    .project-dialog-close,
     .portfolio-card-media img,
     .portfolio-skeleton { transition: none; animation: none; }
 }

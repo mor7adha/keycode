@@ -185,6 +185,7 @@ function openProject(project, trigger) {
     elements.dialogContent.append(body);
     elements.dialogClose.setAttribute("aria-label", text("close"));
     if (!elements.dialog.open) elements.dialog.showModal();
+    elements.dialogContent.scrollTop = 0;
     history.replaceState(null, "", `#${encodeURIComponent(project.id)}`);
 }
 
