@@ -1,4 +1,4 @@
-import { loadProjects, projectText } from "./portfolio-data.js";
+import { initialProjects, loadProjects, projectText } from "./portfolio-data.js";
 
 const grid = document.getElementById("workPreviewGrid");
 let projects = [];
@@ -56,8 +56,13 @@ function render() {
 }
 
 if (grid) {
-    projects = await loadProjects();
+    projects = initialProjects();
     render();
+    loadProjects().then(updated => {
+        if (JSON.stringify(updated) === JSON.stringify(projects)) return;
+        projects = updated;
+        render();
+    });
     new MutationObserver(records => {
         if (records.some(record => record.attributeName === "lang")) render();
     }).observe(document.documentElement, { attributes: true, attributeFilter: ["lang"] });

@@ -131,13 +131,39 @@ export function projectText(project, language = "ar") {
     };
 }
 
-export async function loadProjects() {
+const PROJECTS_CACHE_KEY = "keycode_public_projects_v1";
+const PROJECTS_CACHE_AGE = 24 * 60 * 60 * 1000;
+
+function validProjects(projects) {
+    return Array.isArray(projects) && projects.every(project => project &&
+        ["id", "title", "description", "category"].every(key => typeof project[key] === "string"));
+}
+
+export function initialProjects() {
     try {
-        const response = await fetch("/api/projects", { headers: { accept: "application/json" }, cache: "no-store" });
+        const cached = JSON.parse(localStorage.getItem(PROJECTS_CACHE_KEY));
+        if (cached && Date.now() - cached.savedAt < PROJECTS_CACHE_AGE && validProjects(cached.projects)) {
+            return cached.projects;
+        }
+    } catch { /* Storage may be unavailable or full. */ }
+    return defaultProjects;
+}
+
+export async function loadProjects() {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+        const response = await fetch("/api/projects", { headers: { accept: "application/json" }, cache: "no-store", signal: controller.signal });
         if (!response.ok) throw new Error("projects request failed");
         const data = await response.json();
-        return Array.isArray(data.projects) ? data.projects : defaultProjects;
+        if (!validProjects(data.projects)) throw new Error("invalid projects response");
+        try {
+            localStorage.setItem(PROJECTS_CACHE_KEY, JSON.stringify({ savedAt: Date.now(), projects: data.projects }));
+        } catch { /* Rendering must not depend on available storage space. */ }
+        return data.projects;
     } catch {
-        return defaultProjects;
+        return initialProjects();
+    } finally {
+        clearTimeout(timeout);
     }
 }

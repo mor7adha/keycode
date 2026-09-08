@@ -1,4 +1,4 @@
-import { loadProjects, projectText } from "./portfolio-data.js";
+import { initialProjects, loadProjects, projectText } from "./portfolio-data.js";
 
 const translations = {
     ar: {
@@ -339,9 +339,28 @@ elements.dialog.addEventListener("close", () => {
 window.addEventListener("scroll", () => elements.header.classList.toggle("scrolled", window.scrollY > 40), { passive: true });
 
 document.getElementById("year").textContent = new Date().getFullYear();
-projects = await loadProjects();
+projects = initialProjects();
 applyLanguage();
 
-const requestedId = decodeURIComponent(location.hash.slice(1));
-const requestedProject = projects.find(project => project.id === requestedId);
-if (requestedProject) openProject(requestedProject);
+function openRequestedProject() {
+    const requestedProject = projects.find(project => `#${encodeURIComponent(project.id)}` === location.hash);
+    if (requestedProject && !elements.dialog.open) openProject(requestedProject);
+}
+openRequestedProject();
+
+loadProjects().then(updated => {
+    if (JSON.stringify(updated) === JSON.stringify(projects)) return;
+    projects = updated;
+    if (activeCategory !== "all" && !projects.some(project => project.category === activeCategory)) activeCategory = "all";
+    renderFilters();
+    renderProjects();
+    if (elements.dialog.open) {
+        const current = projects.find(project => `#${encodeURIComponent(project.id)}` === location.hash);
+        if (current) {
+            const scrollTop = elements.dialogContent.scrollTop;
+            openProject(current, lastDialogTrigger);
+            elements.dialogContent.scrollTop = scrollTop;
+        } else closeProject();
+    }
+    openRequestedProject();
+});
