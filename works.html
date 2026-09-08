@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أعمالنا | KeyCode</title>
+    <meta name="description" content="معرض أعمال KeyCode في تصميم وتطوير المواقع والأنظمة الإدارية والأبحاث والحلول الرقمية.">
+    <link rel="icon" href="logo2.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;850&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="works.css">
+</head>
+<body class="dark-theme works-page">
+    <a class="works-skip-link" href="#projects" data-i18n="skip">انتقل إلى الأعمال</a>
+    <div id="particles-js" aria-hidden="true"></div>
+
+    <header class="main-header">
+        <div class="header-container">
+            <a class="logo-area" href="index.html" aria-label="KeyCode الرئيسية">
+                <span class="brand-mark"><img src="logo2.png" alt="" class="brand-logo"></span>
+                <span class="brand-name">Key<span class="gradient-text">Code</span></span>
+            </a>
+            <nav class="nav-menu" id="navMenu" aria-label="القائمة الرئيسية">
+                <a href="index.html#hero" class="nav-link" data-i18n="nav_home">الرئيسية</a>
+                <a href="index.html#services" class="nav-link" data-i18n="nav_services">الخدمات</a>
+                <a href="works.html" class="nav-link active" aria-current="page" data-i18n="nav_works">أعمالنا</a>
+                <a href="#about" class="nav-link" data-i18n="nav_about">عن KeyCode</a>
+                <a href="#contact" class="nav-link" data-i18n="nav_contact">تواصل معنا</a>
+            </nav>
+            <div class="header-actions">
+                <button class="lang-toggle-btn" id="langToggle" type="button" aria-label="Switch language">
+                    <i class="fa-solid fa-globe" aria-hidden="true"></i>
+                    <span id="langText">English</span>
+                </button>
+                <a class="works-contact-btn" href="https://wa.me/967784926052" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                    <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+                </a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="navMenu">
+                    <i class="fa-solid fa-bars-staggered" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="portfolio-hero">
+            <div class="container portfolio-hero-grid">
+                <div class="portfolio-hero-copy">
+                    <span class="works-eyebrow"><i></i><span data-i18n="hero_eyebrow">من الفكرة إلى تجربة تستحق العرض</span></span>
+                    <h1 data-i18n="hero_title">نصنع الفرق.<br>وتحكي <span class="gradient-text">أعمالنا</span><br>بقية القصة<span class="hero-dot">.</span></h1>
+                    <p data-i18n="hero_description">كل مشروع فرصة لصناعة شيء مختلف. اكتشف كيف نحوّل الأفكار إلى تجارب رقمية تجمع جمال التصميم وقوة الأداء.</p>
+                    <div class="portfolio-actions">
+                        <a class="btn btn-primary" href="#projects"><span data-i18n="hero_cta">اكتشف أعمالنا</span><i class="fa-solid fa-arrow-down" aria-hidden="true"></i></a>
+                        <a class="works-text-link" href="#contact"><span data-i18n="hero_contact">عندك فكرة؟ خلّنا نتحدث</span><i class="fa-solid fa-arrow-left" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="portfolio-proof">
+                        <span class="proof-mark" aria-hidden="true">&lt;/&gt;</span>
+                        <p><strong data-i18n="proof_title">شغف بالتفاصيل. إتقان في التنفيذ.</strong><small data-i18n="proof_text">من أول فكرة، إلى آخر سطر برمجي.</small></p>
+                    </div>
+                </div>
+                <div class="portfolio-hero-art" aria-hidden="true">
+                    <div class="portfolio-orbit orbit-large"></div>
+                    <div class="portfolio-orbit orbit-small"></div>
+                    <span class="art-float art-float-top"><i></i> <span data-i18n="art_idea">أفكار تتحول إلى واقع</span></span>
+                    <div class="portfolio-browser">
+                        <div class="portfolio-browser-bar"><span>keycode / selected work</span><span><b></b><b></b><b></b></span></div>
+                        <div class="portfolio-browser-body">
+                            <span class="browser-kicker">BUILT WITH PURPOSE</span>
+                            <strong>Ideas into<br><em>experiences.</em></strong>
+                            <div class="browser-lines"><i></i><i></i></div>
+                            <div class="browser-tiles"><span>01 <b>DESIGN</b></span><span>02 <b>DEVELOP</b></span><span>03 <b>DELIVER</b></span></div>
+                        </div>
+                    </div>
+                    <span class="art-float art-float-bottom"><i class="fa-solid fa-check" aria-hidden="true"></i> <span data-i18n="art_result">تصميم يلفت. تجربة تبقى.</span></span>
+                </div>
+            </div>
+        </section>
+
+        <div class="portfolio-disciplines" aria-label="مجالات عمل KeyCode">
+            <div class="container">
+                <span data-i18n="discipline_ui">تصميم واجهات</span><i>—</i>
+                <span data-i18n="discipline_web">تطوير مواقع</span><i>—</i>
+                <span data-i18n="discipline_store">متاجر إلكترونية</span><i>—</i>
+                <span data-i18n="discipline_systems">أنظمة ذكية</span><i>—</i>
+                <span dir="ltr">MADE BY KEYCODE</span>
+            </div>
+        </div>
+
+        <section id="projects" class="portfolio-projects container" aria-labelledby="projects-title">
+            <div class="portfolio-section-heading">
+                <div>
+                    <span class="works-eyebrow" data-i18n="projects_eyebrow">مختارات من شغلنا / SELECTED WORK</span>
+                    <h2 id="projects-title" data-i18n="projects_title">أفكار أخذت <span class="gradient-text">شكلها الحقيقي.</span></h2>
+                </div>
+                <span class="portfolio-count"><b id="projectCount">—</b> <span data-i18n="projects_count">مشروع في المعرض</span></span>
+            </div>
+            <div class="portfolio-toolbar">
+                <div class="portfolio-filters" id="projectFilters" aria-label="تصفية حسب التصنيف"></div>
+                <label class="portfolio-search">
+                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                    <span class="sr-only" data-i18n="search_label">ابحث عن مشروع</span>
+                    <input id="projectSearch" type="search" placeholder="ابحث عن مشروع…" data-i18n-placeholder="search_placeholder">
+                </label>
+            </div>
+            <div class="portfolio-grid" id="projectGrid" aria-live="polite" aria-busy="true">
+                <article class="portfolio-skeleton" aria-hidden="true"></article>
+                <article class="portfolio-skeleton" aria-hidden="true"></article>
+                <article class="portfolio-skeleton" aria-hidden="true"></article>
+            </div>
+        </section>
+
+        <section id="about" class="portfolio-about container">
+            <div>
+                <span class="works-eyebrow" data-i18n="about_eyebrow">الفكرة تستحق تنفيذًا متقنًا</span>
+                <h2 data-i18n="about_title">تفاصيل صغيرة.<br><span class="gradient-text">أثر كبير.</span></h2>
+            </div>
+            <div>
+                <p data-i18n="about_text">في KeyCode، نؤمن أن المشروع الناجح يبدأ بفهم الفكرة. نجمع التصميم والتطوير لنصنع تجربة واضحة، جميلة، وسهلة الاستخدام.</p>
+                <div class="portfolio-values"><span><b>01</b><span data-i18n="value_identity">تصميم بهوية</span></span><span><b>02</b><span data-i18n="value_build">تطوير بإتقان</span></span><span><b>03</b><span data-i18n="value_experience">تجربة تهمّك</span></span></div>
+            </div>
+        </section>
+
+        <section id="contact" class="portfolio-contact-wrap container">
+            <div class="portfolio-contact">
+                <span class="works-eyebrow" data-i18n="contact_eyebrow">مشروعك القادم يبدأ بمحادثة</span>
+                <h2 data-i18n="contact_title">عندك فكرة؟ <span class="gradient-text">نعطيها حياة.</span></h2>
+                <p data-i18n="contact_text">حدثنا عن مشروعك، ولنصنع معًا شيئًا يستحق أن يكون هنا.</p>
+                <a class="btn btn-primary" href="https://wa.me/967784926052" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span data-i18n="contact_cta">خلّنا نبدأ على واتساب</span></a>
+                <span class="contact-code" aria-hidden="true">&lt;/&gt;</span>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer portfolio-footer">
+        <div class="footer-glow"></div>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a class="logo-area" href="index.html">
+                        <span class="brand-mark"><img src="logo2.png" alt="" class="brand-logo"></span>
+                        <span class="brand-name">Key<span class="gradient-text">Code</span></span>
+                    </a>
+                    <p class="footer-brand-desc" data-i18n="footer_desc">نصمم ونطوّر حلولًا رقمية تهتم بالفكرة والتفاصيل والنتيجة.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/KeyCode" target="_blank" rel="noopener noreferrer" class="social-link facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="https://instagram.com/key_code_ye" target="_blank" rel="noopener noreferrer" class="social-link instagram" aria-label="Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+                        <a href="https://wa.me/967784926052" target="_blank" rel="noopener noreferrer" class="social-link whatsapp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3 data-i18n="footer_links">روابط سريعة</h3>
+                    <ul><li><a href="index.html" data-i18n="nav_home">الرئيسية</a></li><li><a href="index.html#services" data-i18n="nav_services">الخدمات</a></li><li><a href="#projects" data-i18n="nav_works">أعمالنا</a></li><li><a href="#contact" data-i18n="nav_contact">تواصل معنا</a></li></ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 data-i18n="footer_contact">معلومات الاتصال</h3>
+                    <ul class="contact-info-list">
+                        <li><a href="https://wa.me/967784926052" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i><span>+967 784 926 052</span></a></li>
+                        <li><a href="tel:+967778150247"><i class="fa-solid fa-phone" aria-hidden="true"></i><span>+967 778 150 247</span></a></li>
+                        <li><span><i class="fa-solid fa-location-dot" aria-hidden="true"></i><span data-i18n="footer_location">اليمن، خدمات عن بُعد لجميع الدول</span></span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="portfolio-footer-bottom"><span>© <span id="year"></span> KeyCode. <span data-i18n="footer_rights">جميع الحقوق محفوظة.</span></span><a href="works-admin.html" data-i18n="manage_work">إدارة الأعمال</a></div>
+        </div>
+    </footer>
+
+    <dialog class="project-dialog" id="projectDialog" aria-labelledby="dialogTitle">
+        <button class="project-dialog-close" id="dialogClose" type="button" aria-label="إغلاق"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        <div id="dialogContent"></div>
+    </dialog>
+
+    <script type="module" src="works.js"></script>
+</body>
+</html>

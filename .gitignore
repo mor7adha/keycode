@@ -1,4 +1,10 @@
 node_modules/
 .netlify/
+dist/
 .env
 .env.*
+.chrome-*/
+OUR WORK/.browser-check/
+*-desktop.png
+*-mobile.png
+*-mobile-final.png

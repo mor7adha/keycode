@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>إدارة الأعمال | KeyCode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="admin.css"><link rel="stylesheet" href="works-admin.css">
+</head>
+<body>
+  <section class="login-screen" id="loginScreen">
+    <form class="login-card" id="loginForm">
+      <div class="admin-logo"><img src="logo2.png" alt="KeyCode"></div><span class="eyebrow">KEYCODE PORTFOLIO</span>
+      <h1>إدارة معرض الأعمال</h1><p>استخدم نفس بيانات دخول لوحة المنتجات.</p>
+      <label>اسم المستخدم<input id="loginUser" autocomplete="username" required></label>
+      <label>كلمة المرور<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+      <p class="login-error" id="loginError" role="alert" aria-live="polite"></p>
+      <button class="primary-btn" type="submit">دخول <i class="fa-solid fa-arrow-left" aria-hidden="true"></i></button>
+      <a href="works.html" class="back-link">العودة إلى معرض الأعمال</a>
+    </form>
+  </section>
+
+  <main class="dashboard" id="dashboard" hidden>
+    <aside class="sidebar">
+      <div class="side-brand"><div class="admin-logo small"><img src="logo2.png" alt=""></div><strong>KeyCode</strong></div>
+      <nav><a href="admin.html"><i class="fa-solid fa-boxes-stacked" aria-hidden="true"></i> المنتجات</a><a class="active" href="works-admin.html" aria-current="page"><i class="fa-solid fa-briefcase" aria-hidden="true"></i> الأعمال</a></nav>
+      <div class="side-bottom"><a href="works.html" target="_blank" aria-label="عرض معرض الأعمال"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> عرض المعرض</a><button id="logoutBtn" aria-label="تسجيل الخروج"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> تسجيل الخروج</button></div>
+    </aside>
+    <section class="content">
+      <header class="topbar"><div><span class="eyebrow">PORTFOLIO CONTROL</span><h1>إدارة الأعمال</h1></div><button class="primary-btn" id="addProjectBtn"><i class="fa-solid fa-plus" aria-hidden="true"></i> إضافة مشروع</button></header>
+      <div class="stats portfolio-admin-stats"><article><i class="fa-solid fa-briefcase" aria-hidden="true"></i><div><span>إجمالي المشاريع</span><strong id="totalProjects">0</strong></div></article><article><i class="fa-solid fa-star" aria-hidden="true"></i><div><span>أعمال مميزة</span><strong id="featuredProjects">0</strong></div></article><article><i class="fa-solid fa-layer-group" aria-hidden="true"></i><div><span>التصنيفات</span><strong id="categoryCount">0</strong></div></article></div>
+      <div class="toolbar"><input id="searchInput" type="search" placeholder="ابحث باسم المشروع..." aria-label="البحث باسم المشروع"><span id="saveStatus">الأعمال متزامنة مع المعرض</span></div>
+      <div class="products-table-wrap"><table class="works-admin-table"><thead><tr><th>المشروع</th><th>التصنيف</th><th>السنة</th><th>الحالة</th><th>الإجراءات</th></tr></thead><tbody id="projectsBody"></tbody></table><div class="empty-state" id="emptyState" hidden><i class="fa-solid fa-folder-open"></i><p>لا توجد مشاريع مطابقة.</p></div></div>
+    </section>
+  </main>
+
+  <div class="modal" id="projectModal" hidden>
+    <form class="modal-card" id="projectForm">
+      <div class="modal-head"><div><span class="eyebrow">PROJECT EDITOR</span><h2 id="modalHeading">إضافة مشروع</h2></div><button type="button" class="icon-btn" id="closeModal" aria-label="إغلاق نافذة المشروع"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
+      <div class="form-grid">
+        <label>اسم المشروع بالعربية *<input id="titleAr" maxlength="100" required></label><label>اسم المشروع بالإنجليزية<input id="titleEn" maxlength="100"></label>
+        <label class="wide">الوصف بالعربية *<textarea id="descriptionAr" maxlength="3000" rows="4" required></textarea></label><label class="wide">الوصف بالإنجليزية<textarea id="descriptionEn" maxlength="3000" rows="4"></textarea></label>
+        <label>التصنيف بالعربية *<input id="categoryAr" list="projectCategories" maxlength="60" required><datalist id="projectCategories"><option value="مواقع إلكترونية"><option value="أنظمة إدارية"><option value="متاجر إلكترونية"><option value="أمن سيبراني"><option value="أبحاث وتوثيق"><option value="مواقع شخصية"></datalist></label><label>التصنيف بالإنجليزية<input id="categoryEn" maxlength="60"></label>
+        <label>رابط المشروع<input id="projectUrl" type="url" maxlength="2000" dir="ltr" placeholder="https://example.com"></label><label>سنة الإنجاز<input id="projectYear" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="2026"></label>
+        <label class="wide">الوسوم بالعربية<input id="tagsAr" maxlength="200" placeholder="تصميم، تطوير، نظام"></label><label class="wide">الوسوم بالإنجليزية<input id="tagsEn" maxlength="200" placeholder="Design, Development, System"></label>
+        <label class="wide">صورة المشروع<input id="projectImage" type="file" accept="image/png,image/jpeg,image/webp"><small>PNG أو JPG أو WebP حتى 2 ميجابايت.</small></label>
+        <div class="wide admin-image-preview-wrap" id="imagePreviewWrap" hidden><img id="imagePreview" alt="معاينة صورة المشروع"><button type="button" class="ghost-btn" id="removeImage">إزالة الصورة</button></div>
+        <label class="toggle-label wide"><input id="projectFeatured" type="checkbox"><span>عمل مميز — يظهر في بداية المعرض</span></label>
+      </div>
+      <p class="form-error" id="formError" role="alert" aria-live="polite"></p>
+      <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelModal">إلغاء</button><button class="primary-btn" id="saveProjectBtn" type="submit"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> حفظ ونشر المشروع</button></div>
+    </form>
+  </div>
+
+  <div class="modal" id="deleteModal" hidden>
+    <div class="modal-card delete-card" role="alertdialog" aria-modal="true" aria-labelledby="deleteTitle">
+      <div class="modal-head"><div><span class="eyebrow">CONFIRM DELETE</span><h2 id="deleteTitle">حذف المشروع؟</h2></div></div>
+      <p id="deleteMessage"></p><p class="form-error" id="deleteError" role="alert"></p>
+      <div class="modal-actions"><button type="button" class="ghost-btn" id="cancelDelete">إلغاء</button><button type="button" class="primary-btn danger-btn" id="confirmDelete"><i class="fa-solid fa-trash" aria-hidden="true"></i> حذف المشروع</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="works-admin.js"></script>
+</body>
+</html>

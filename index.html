@@ -34,6 +34,7 @@
             <nav class="nav-menu" id="navMenu">
                 <a href="#hero" class="nav-link active" data-i18n="nav_home">الرئيسية</a>
                 <a href="#services" class="nav-link" data-i18n="nav_services">الخدمات</a>
+                <a href="works.html" class="nav-link" data-i18n="nav_works">أعمالنا</a>
                 <a href="#why-us" class="nav-link" data-i18n="nav_features">مميزاتنا</a>
                 <a href="#faqs" class="nav-link" data-i18n="nav_faqs">الأسئلة الشائعة</a>
                 <a href="#contact" class="nav-link" data-i18n="nav_contact">تواصل معنا</a>
@@ -183,6 +184,28 @@
             <!-- Services Grid -->
             <div class="services-grid" id="servicesGrid">
                 <!-- Services will be populated dynamically via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Selected Work Preview -->
+    <section id="our-work" class="work-preview-section" aria-labelledby="work-preview-title">
+        <div class="container">
+            <div class="work-preview-heading">
+                <div class="section-header work-preview-copy">
+                    <span class="section-subtitle" data-i18n="work_subtitle">أعمال مختارة</span>
+                    <h2 class="section-title" id="work-preview-title" data-i18n="work_title">حلول حقيقية صممناها لتصنع فرقًا</h2>
+                    <p class="work-preview-intro" data-i18n="work_intro">من مواقع الشركات إلى الأنظمة الذكية، شاهد كيف نحوّل احتياجات عملائنا إلى تجارب رقمية متقنة.</p>
+                </div>
+                <a href="works.html" class="btn btn-secondary work-preview-all">
+                    <span data-i18n="work_view_all">استكشف كل الأعمال</span>
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="work-preview-grid" id="workPreviewGrid" aria-live="polite" aria-busy="true">
+                <article class="work-preview-skeleton" aria-hidden="true"></article>
+                <article class="work-preview-skeleton" aria-hidden="true"></article>
+                <article class="work-preview-skeleton" aria-hidden="true"></article>
             </div>
         </div>
     </section>
@@ -352,6 +375,7 @@
                     <ul>
                         <li><a href="#hero" data-i18n="nav_home">الرئيسية</a></li>
                         <li><a href="#services" data-i18n="nav_services">الخدمات والاشتراكات</a></li>
+                        <li><a href="works.html" data-i18n="nav_works">أعمالنا</a></li>
                         <li><a href="#why-us" data-i18n="nav_features">لماذا نحن؟</a></li>
                         <li><a href="#faqs" data-i18n="nav_faqs">الأسئلة الشائعة</a></li>
                     </ul>
@@ -399,5 +423,6 @@
 
     <!-- JS Files -->
     <script src="app.js"></script>
+    <script type="module" src="portfolio-preview.js"></script>
 </body>
 </html>
