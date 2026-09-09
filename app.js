@@ -370,6 +370,7 @@ const WHATSAPP_PHONE = "967784926052";
 let currentLang = localStorage.getItem("keycode_lang") || "ar";
 let cart = JSON.parse(localStorage.getItem("keycode_cart")) || [];
 let activeCategory = "all";
+let servicesLoaded = false;
 let currentReviewIndex = 0;
 
 // --- DOM Element References ---
@@ -401,7 +402,6 @@ const paymentMethodSelect = document.getElementById("paymentMethod");
 // --- Initialize Site ---
 document.addEventListener("DOMContentLoaded", () => {
     applyLanguage(currentLang);
-    renderServices();
     updateCartUI();
     initCounters();
     setupFAQAccordion();
@@ -413,17 +413,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function loadPublishedProducts() {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
     try {
-        const response = await fetch("/api/products", { headers: { accept: "application/json" }, cache: "no-store" });
+        const response = await fetch("/api/products", { headers: { accept: "application/json" }, cache: "no-store", signal: controller.signal });
         if (!response.ok) return;
         const data = await response.json();
         if (!Array.isArray(data.products)) return;
         servicesDatabase.splice(0, servicesDatabase.length, ...data.products);
         localStorage.setItem("keycode_products", JSON.stringify(data.products));
         writeProductsTransfer(data.products);
-        renderServices();
     } catch (_) {
         // Local file previews keep using the bundled/local product list.
+    } finally {
+        clearTimeout(timeout);
+        servicesLoaded = true;
+        renderServices();
     }
 }
 
@@ -488,6 +493,8 @@ function applyLanguage(lang) {
 
 // --- Dynamic Services Rendering ---
 function renderServices() {
+    if (!servicesLoaded) return;
+    servicesGrid.setAttribute("aria-busy", "false");
     servicesGrid.innerHTML = "";
     const isAr = currentLang === "ar";
     

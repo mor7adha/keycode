@@ -11,10 +11,14 @@
     <!-- Google Fonts: Cairo (Arabic) & Plus Jakarta Sans (English) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;850&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;850&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     
     <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;850&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
+    </noscript>
     
     <!-- CSS File -->
     <link rel="stylesheet" href="style.css">
@@ -182,8 +186,10 @@
             </div>
 
             <!-- Services Grid -->
-            <div class="services-grid" id="servicesGrid">
-                <!-- Services will be populated dynamically via JavaScript -->
+            <div class="services-grid" id="servicesGrid" aria-busy="true">
+                <div class="service-skeleton" aria-hidden="true"></div>
+                <div class="service-skeleton" aria-hidden="true"></div>
+                <div class="service-skeleton" aria-hidden="true"></div>
             </div>
         </div>
     </section>
@@ -422,7 +428,7 @@
     </section>
 
     <!-- JS Files -->
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
     <script type="module" src="portfolio-preview.js"></script>
 </body>
 </html>
