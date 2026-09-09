@@ -8,16 +8,13 @@
     <meta name="description" content="متجر KeyCode للخدمات الرقمية. اشتراكات ChatGPT Plus, Gemini Pro, Grok, Canva Pro, CapCut Pro وتوثيق حسابات X، بالإضافة للخدمات الطلابية وتطوير الويب بأعلى جودة وأفضل الأسعار.">
     <meta name="keywords" content="KeyCode, متجر خدمات رقمية, اشتراك ChatGPT, اشتراك Canva, توثيق حسابات X, خدمات طلابية, برمجة مواقع, Grok, Gemini Pro">
     
-    <!-- Google Fonts: Cairo (Arabic) & Plus Jakarta Sans (English) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;850&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.2/css/all.min.css">
-    
-    <!-- CSS File -->
+    <!-- Locally hosted fonts and icons avoid third-party render blocking. -->
+    <link rel="stylesheet" href="assets/vendor/fonts.css">
+    <link rel="stylesheet" href="assets/vendor/icons.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="modulepreload" href="portfolio-preview.js">
+    <link rel="modulepreload" href="portfolio-data.js">
+    <link rel="prefetch" href="works.html" as="document">
 </head>
 <body class="dark-theme">
     <!-- Particle Background -->
@@ -422,7 +419,7 @@
     </section>
 
     <!-- JS Files -->
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
     <script type="module" src="portfolio-preview.js"></script>
 </body>
 </html>
