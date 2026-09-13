@@ -2052,6 +2052,68 @@ html[lang="ar"] .hero-title .gradient-text {
     .brand-mark { width: 44px; height: 44px; flex-basis: 44px; }
 }
 
+/* Compact storefront cards on phones and tablets. */
+@media (max-width: 1024px) {
+    .services-grid,
+    .features-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .service-card,
+    .feature-card {
+        min-width: 0;
+        padding: 20px 16px;
+    }
+
+    .service-card-header {
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    .service-badge {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .service-title { font-size: 1.1rem; overflow-wrap: anywhere; }
+    .service-desc { margin-bottom: 12px; }
+    .price-container { flex-wrap: wrap; gap: 4px 6px; }
+    .price-main { font-size: 1.5rem; }
+    .selector-dropdown { min-width: 0; min-height: 44px; padding-inline: 6px; }
+    .feature-icon { width: 48px; height: 48px; margin-bottom: 14px; font-size: 1.4rem; }
+    .feature-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+}
+
+@media (max-width: 600px) {
+    .services-grid,
+    .features-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .service-card,
+    .feature-card { padding: 16px 12px; }
+    .service-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .service-icon { width: 40px; height: 40px; font-size: 1.2rem; }
+    .service-badge { padding: 3px 6px; font-size: .75rem; }
+    .service-card-body { margin-bottom: 14px; }
+    .service-title { font-size: 1rem; line-height: 1.5; }
+    .service-desc { font-size: .8rem; line-height: 1.65; }
+    .price-main { font-size: 1.4rem; }
+    .price-original,
+    .price-period { font-size: .75rem; }
+    .service-options { margin-top: 10px; }
+    .options-label,
+    .selector-dropdown { font-size: .75rem; }
+    .service-card-footer .btn { min-height: 44px; padding: 8px 6px; gap: 6px; font-size: .8rem; }
+    .feature-card h3 { font-size: .95rem; line-height: 1.5; }
+    .feature-card p { font-size: .8rem; line-height: 1.65; }
+    .feature-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+
 /* Our work — integrated portfolio preview */
 .work-preview-section {
     position: relative;
