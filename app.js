@@ -582,7 +582,12 @@ function renderServices() {
             </div>
             <div class="service-card-body">
                 <h3 class="service-title">${title}</h3>
-                <p class="service-desc">${desc}</p>
+                <div class="service-description">
+                    <p class="service-desc" id="service-desc-${service.id}">${desc}</p>
+                    <button type="button" class="service-description-toggle" hidden
+                        aria-expanded="false" aria-controls="service-desc-${service.id}"
+                        aria-label="${isAr ? 'عرض الوصف كاملًا' : 'Show full description'}">…</button>
+                </div>
                 ${pricingHTML}
                 ${optionsHTML}
             </div>
@@ -591,8 +596,42 @@ function renderServices() {
             </div>
         `;
         
+        const toggle = card.querySelector('.service-description-toggle');
+        toggle.addEventListener('click', () => {
+            const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+            card.classList.toggle('is-description-expanded', expanded);
+            toggle.setAttribute('aria-expanded', String(expanded));
+            toggle.setAttribute('aria-label', expanded
+                ? (isAr ? 'طي الوصف' : 'Collapse description')
+                : (isAr ? 'عرض الوصف كاملًا' : 'Show full description'));
+            toggle.textContent = expanded ? '−' : '…';
+        });
         servicesGrid.appendChild(card);
     });
+    observeServiceDescriptions();
+}
+
+// Recheck truncation after resizing, font loading, filtering, or language changes.
+let serviceDescriptionObserver;
+function updateServiceDescriptionToggles() {
+    const compact = window.matchMedia('(max-width: 600px)').matches;
+    document.querySelectorAll('.service-card').forEach(card => {
+        const description = card.querySelector('.service-desc');
+        const toggle = card.querySelector('.service-description-toggle');
+        const expanded = card.classList.contains('is-description-expanded');
+        // Arabic glyphs can extend a few pixels beyond the line box without an extra line.
+        const tolerance = parseFloat(getComputedStyle(description).lineHeight) / 2;
+        toggle.hidden = !compact || (!expanded && description.scrollHeight <= description.clientHeight + tolerance);
+    });
+}
+window.addEventListener('resize', updateServiceDescriptionToggles);
+document.fonts.ready.then(updateServiceDescriptionToggles);
+
+function observeServiceDescriptions() {
+    serviceDescriptionObserver ??= new ResizeObserver(updateServiceDescriptionToggles);
+    serviceDescriptionObserver.disconnect();
+    document.querySelectorAll('.service-desc').forEach(description => serviceDescriptionObserver.observe(description));
+    updateServiceDescriptionToggles();
 }
 
 // --- Update Price on Card Selection ---

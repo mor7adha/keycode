@@ -2052,6 +2052,8 @@ html[lang="ar"] .hero-title .gradient-text {
     .brand-mark { width: 44px; height: 44px; flex-basis: 44px; }
 }
 
+.service-description-toggle { display: none; }
+
 /* Compact storefront cards on phones and tablets. */
 @media (max-width: 1024px) {
     .services-grid,
@@ -2095,14 +2097,45 @@ html[lang="ar"] .hero-title .gradient-text {
     }
 
     .service-card,
-    .feature-card { padding: 16px 12px; }
-    .service-card-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-    .service-icon { width: 40px; height: 40px; font-size: 1.2rem; }
-    .service-badge { padding: 3px 6px; font-size: .75rem; }
-    .service-card-body { margin-bottom: 14px; }
-    .service-title { font-size: 1rem; line-height: 1.5; }
-    .service-desc { font-size: .8rem; line-height: 1.65; }
-    .price-main { font-size: 1.4rem; }
+    .feature-card { padding: 12px 10px; }
+    .services-grid { align-items: start; }
+    .service-card-header { flex-direction: row; align-items: center; gap: 6px; margin-bottom: 10px; }
+    .service-icon { width: 34px; height: 34px; flex-shrink: 0; font-size: 1.05rem; }
+    .service-badge { padding: 2px 5px; font-size: .75rem; }
+    .service-card-body { margin-bottom: 10px; }
+    .service-title { font-size: .9rem; line-height: 1.45; margin-bottom: 6px; }
+    .service-description { position: relative; margin-bottom: 8px; }
+    .service-desc {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        font-size: .75rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+    .service-description:has(.service-description-toggle:not([hidden])) { padding-bottom: 32px; }
+    .service-description-toggle:not([hidden]) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        inset-inline-end: 0;
+        bottom: -6px;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0;
+        border: 0;
+        border-radius: 8px;
+        background: transparent;
+        color: var(--color-secondary);
+        font-size: 1.4rem;
+        cursor: pointer;
+    }
+    .service-description-toggle:focus-visible { outline: 2px solid var(--color-secondary); outline-offset: -4px; }
+    .is-description-expanded .service-desc { display: block; -webkit-line-clamp: unset; overflow: visible; }
+    .price-container { margin-top: 6px; }
+    .price-main { font-size: 1.25rem; }
     .price-original,
     .price-period { font-size: .75rem; }
     .service-options { margin-top: 10px; }
