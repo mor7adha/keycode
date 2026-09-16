@@ -863,6 +863,15 @@ html[lang="en"] .hero-content {
 }
 
 .period-options { border: 0; padding: 0; min-width: 0; }
+.period-picker { position: relative; display: block; }
+.period-picker summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--color-border-glow); border-radius: 10px; background: var(--grad-glow); color: var(--color-text-main); font-size: .8rem; font-weight: 700; cursor: pointer; list-style: none; }
+.period-picker summary::-webkit-details-marker { display: none; }
+.period-picker summary:focus-visible { outline: 2px solid var(--color-secondary); outline-offset: 3px; }
+.period-panel { position: absolute; bottom: calc(100% + 8px); inset-inline: 0; z-index: 5; padding: 10px; border: 1px solid var(--color-border-glow); border-radius: 12px; background: #0c1920; box-shadow: 0 12px 32px #0009; max-height: 280px; overflow-y: auto; }
+.period-panel legend { float: inline-start; width: 100%; }
+.period-panel .period-choices { clear: both; grid-template-columns: minmax(0, 1fr); }
+.service-card:has(.period-picker[open]) { z-index: 5; overflow: visible; }
+.service-card:has(.period-picker[open])::after { display: none; }
 .period-options legend { margin-bottom: 10px; padding: 0; }
 .period-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
 .period-choice { position: relative; min-width: 0; cursor: pointer; }
@@ -2126,7 +2135,7 @@ html[lang="ar"] .hero-title .gradient-text {
 
     .service-card,
     .feature-card { padding: 12px 10px; }
-    .services-grid { align-items: start; }
+    .services-grid { align-items: stretch; }
     .service-card-header { flex-direction: row; align-items: center; gap: 6px; margin-bottom: 10px; }
     .service-icon { width: 34px; height: 34px; flex-shrink: 0; font-size: 1.05rem; }
     .service-badge { padding: 2px 5px; font-size: .75rem; }

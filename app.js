@@ -561,12 +561,15 @@ function renderServices() {
                     </label>`;
                 });
                 optionsHTML = `
-                    <fieldset class="service-options period-options">
+                    <details class="service-options period-picker">
+                        <summary aria-label="${isAr ? 'اختر مدة الاشتراك' : 'Choose your duration'}"><span class="period-selected">${isAr ? firstOpt.period_ar : firstOpt.period_en}</span><span aria-hidden="true">⌄</span></summary>
+                        <fieldset class="period-options period-panel">
                         <legend class="options-label">${isAr ? "اختر مدة الاشتراك" : "Choose your duration"}</legend>
                         <div class="period-choices">
                             ${optionsMarkup}
                         </div>
-                    </fieldset>
+                        </fieldset>
+                    </details>
                 `;
             }
 
@@ -647,6 +650,12 @@ window.updateCardPrice = function(serviceId, optionIndex) {
     const isAr = currentLang === "ar";
     
     const priceContainer = document.getElementById(`price-container-${serviceId}`);
+    const picker = priceContainer?.closest('.service-card').querySelector('.period-picker');
+    if (picker) {
+        picker.querySelector('.period-selected').textContent = isAr ? option.period_ar : option.period_en;
+        picker.open = false;
+        picker.querySelector('summary').focus({ preventScroll: true });
+    }
     if (priceContainer) {
         priceContainer.innerHTML = `
             <span class="price-main">$${option.price}</span>
@@ -655,6 +664,19 @@ window.updateCardPrice = function(serviceId, optionIndex) {
         `;
     }
 };
+
+document.addEventListener('click', event => {
+    document.querySelectorAll('.period-picker[open]').forEach(picker => {
+        if (!picker.contains(event.target)) picker.open = false;
+    });
+});
+document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    document.querySelectorAll('.period-picker[open]').forEach(picker => {
+        picker.open = false;
+        picker.querySelector('summary').focus({ preventScroll: true });
+    });
+});
 
 // --- Category Filter Tabs Event ---
 filterTabs.forEach(tab => {
