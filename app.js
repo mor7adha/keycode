@@ -543,9 +543,9 @@ function renderServices() {
             const hasMultipleOptions = service.options.length > 1;
             
             pricingHTML = `
-                <div class="price-container" id="price-container-${service.id}">
+                <div class="price-container" id="price-container-${service.id}" aria-live="polite" aria-atomic="true">
                     <span class="price-main">$${firstOpt.price}</span>
-                    <span class="price-original">$${firstOpt.original_price}</span>
+                    ${Number(firstOpt.original_price) > Number(firstOpt.price) ? `<span class="price-original">$${firstOpt.original_price}</span>` : ""}
                     <span class="price-period">/ ${isAr ? firstOpt.period_ar : firstOpt.period_en}</span>
                 </div>
             `;
@@ -558,8 +558,8 @@ function renderServices() {
                 });
                 optionsHTML = `
                     <div class="service-options">
-                        <label class="options-label">${isAr ? "اختر الباقة / المدة:" : "Select Package / Duration:"}</label>
-                        <select class="selector-dropdown" onchange="updateCardPrice('${service.id}', this.value)">
+                        <label class="options-label" for="period-select-${service.id}">${isAr ? "اختر الباقة / المدة:" : "Select Package / Duration:"}</label>
+                        <select id="period-select-${service.id}" class="selector-dropdown" onchange="updateCardPrice('${service.id}', this.value)">
                             ${optionsMarkup}
                         </select>
                     </div>
@@ -639,13 +639,14 @@ window.updateCardPrice = function(serviceId, optionIndex) {
     const service = servicesDatabase.find(s => s.id === serviceId);
     if (!service) return;
     const option = service.options[optionIndex];
+    if (!option) return;
     const isAr = currentLang === "ar";
     
     const priceContainer = document.getElementById(`price-container-${serviceId}`);
     if (priceContainer) {
         priceContainer.innerHTML = `
             <span class="price-main">$${option.price}</span>
-            <span class="price-original">$${option.original_price}</span>
+            ${Number(option.original_price) > Number(option.price) ? `<span class="price-original">$${option.original_price}</span>` : ""}
             <span class="price-period">/ ${isAr ? option.period_ar : option.period_en}</span>
         `;
     }

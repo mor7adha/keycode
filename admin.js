@@ -350,10 +350,49 @@ $("searchInput").addEventListener("input", renderProducts);
 $("addProductBtn").addEventListener("click", () => openProductModal());
 $("category").addEventListener("change", () => {
   if ($("category").value === "custom-services") $("saleType").value = "quote";
+  syncPeriodEditor();
 });
 $("closeModal").addEventListener("click", closeProductModal);
 $("cancelModal").addEventListener("click", closeProductModal);
 modal.addEventListener("click", event => { if (event.target === modal) closeProductModal(); });
+
+function syncPeriodEditor() {
+  const isQuote = $("saleType").value === "quote";
+  $("periodEditor").hidden = isQuote;
+  $("periodRows").querySelectorAll("input").forEach(input => { input.disabled = isQuote; });
+}
+
+function addPeriodRow(option = {}) {
+  const row = document.createElement("fieldset");
+  row.className = "period-row";
+  row.optionData = option;
+  row.innerHTML = `<legend>فترة الاشتراك</legend><div class="form-grid">
+    <label>المدة بالعربية<input data-field="period_ar" placeholder="شهر" required value="${safeText(option.period_ar || '')}"></label>
+    <label>المدة بالإنجليزية<input data-field="period_en" placeholder="month" required value="${safeText(option.period_en || '')}"></label>
+    <label>السعر بالدولار<input data-field="price" type="number" min="0" step="0.01" required value="${safeText(option.price ?? '')}"></label>
+    <label>السعر السابق (اختياري)<input data-field="original_price" type="number" min="0" step="0.01" value="${safeText(option.original_price ?? '')}"></label>
+  </div><button type="button" class="ghost-btn remove-period">حذف الفترة</button>`;
+  row.querySelector(".remove-period").addEventListener("click", () => {
+    row.remove();
+    updatePeriodRows();
+    $("addPeriodBtn").focus();
+  });
+  $("periodRows").appendChild(row);
+  updatePeriodRows();
+  syncPeriodEditor();
+  return row;
+}
+
+function updatePeriodRows() {
+  const rows = [...$("periodRows").children];
+  rows.forEach((row, index) => {
+    row.querySelector("legend").textContent = `الفترة ${index + 1}${index === 0 ? " (الافتراضية)" : ""}`;
+    row.querySelector(".remove-period").disabled = rows.length === 1;
+  });
+}
+
+$("saleType").addEventListener("change", syncPeriodEditor);
+$("addPeriodBtn").addEventListener("click", () => addPeriodRow().querySelector("input").focus());
 
 function openProductModal(product = null) {
   $("productForm").reset();
@@ -364,9 +403,11 @@ function openProductModal(product = null) {
   $("category").value = product?.category || "ai-subscriptions"; $("icon").value = product?.icon || "fa-box";
   const option = product?.options?.[0] || {};
   $("saleType").value = option.is_quote ? "quote" : "fixed";
-  $("price").value = option.price ?? ""; $("originalPrice").value = option.original_price ?? "";
+  $("periodRows").replaceChildren();
+  const options = product?.options?.length ? product.options : [{}];
+  options.forEach(option => addPeriodRow(option));
+  syncPeriodEditor();
   $("stock").value = Number.isFinite(Number(product?.stock)) ? product.stock : 100;
-  $("periodAr").value = option.period_ar || ""; $("periodEn").value = option.period_en || "";
   $("active").checked = product?.active !== false;
   $("featured").checked = product?.featured === true;
   modal.hidden = false;
@@ -391,8 +432,6 @@ $("productForm").addEventListener("submit", event => {
   const existingId = $("productId").value;
   const existing = products.find(item => item.id === existingId);
   const id = existingId || `product-${Date.now()}`;
-  const price = Number($("price").value);
-  const originalPrice = Number($("originalPrice").value || price);
   const isQuote = $("saleType").value === "quote";
   const product = {
     ...(existing || {}), id,
@@ -402,7 +441,14 @@ $("productForm").addEventListener("submit", event => {
     icon_class: $("category").value === "design-edit" ? "design" : $("category").value === "verification" ? "verify" : $("category").value === "academic" ? "academic" : ["web-dev", "custom-services"].includes($("category").value) ? "web" : $("category").value === "entertainment" ? "design" : "ai",
     badge_ar: existing?.badge_ar || "منتج مميز", badge_en: existing?.badge_en || "Featured",
     stock: Math.max(0, Number.parseInt($("stock").value, 10) || 0), active: $("active").checked, featured: $("featured").checked,
-    options: [{ name_ar:isQuote ? "طلب مخصص وتفاصيل" : `${$("periodAr").value || "الباقة"} - $${price}`, name_en:isQuote ? "Custom details and quote" : `${$("periodEn").value || "Package"} - $${price}`, price:isQuote ? 0 : price, original_price:isQuote ? 0 : originalPrice, period_ar:$("periodAr").value || "الباقة", period_en:$("periodEn").value || "package", is_quote:isQuote }]
+    options: isQuote ? [{ name_ar: "طلب مخصص وتفاصيل", name_en: "Custom details and quote", price: 0, is_quote: true }] : [...$("periodRows").children].map(row => {
+      const value = field => row.querySelector(`[data-field="${field}"]`).value.trim();
+      const price = Number(value("price"));
+      const periodAr = value("period_ar"), periodEn = value("period_en");
+      return { ...row.optionData, name_ar: `${periodAr} - $${price}`, name_en: `${periodEn} - $${price}`,
+        price, original_price: Number(value("original_price") || price),
+        period_ar: periodAr, period_en: periodEn, is_quote: false };
+    })
   };
   if (existing) products[products.findIndex(item => item.id === existingId)] = product; else products.unshift(product);
   normalizeProductOrder();

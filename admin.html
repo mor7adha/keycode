@@ -43,8 +43,13 @@
         <label class="wide">الوصف بالعربية<textarea id="descAr" rows="3"></textarea></label><label class="wide">الوصف بالإنجليزية<textarea id="descEn" rows="3"></textarea></label>
         <label>الفئة<select id="category"><option value="ai-subscriptions">اشتراكات الذكاء الاصطناعي</option><option value="design-edit">التصميم والمونتاج</option><option value="verification">توثيق الحسابات</option><option value="academic">الخدمات الطلابية</option><option value="web-dev">تطوير الويب</option><option value="entertainment">ترفيه</option><option value="custom-services">خدمات حسب الطلب</option></select></label>
         <label>طريقة الطلب<select id="saleType"><option value="fixed">منتج بسعر ثابت</option><option value="quote">خدمة حسب الطلب / طلب تسعيرة</option></select></label>
-        <label>السعر بالدولار<input id="price" type="number" min="0" step="0.01" required></label><label>السعر السابق<input id="originalPrice" type="number" min="0" step="0.01"></label><label>الكمية<input id="stock" type="number" min="0" step="1" required></label>
-        <label>المدة بالعربية<input id="periodAr" placeholder="شهر"></label><label>المدة بالإنجليزية<input id="periodEn" placeholder="month"></label>
+        <label>الكمية<input id="stock" type="number" min="0" step="1" required></label>
+        <section class="wide period-editor" id="periodEditor" aria-labelledby="periodHeading">
+          <h3 id="periodHeading">فترات الاشتراك وأسعارها</h3>
+          <p>أضف الفترات المتاحة ليختار العميل بينها من نفس البطاقة. الفترة الأولى تظهر افتراضيًا.</p>
+          <div id="periodRows"></div>
+          <button type="button" class="ghost-btn" id="addPeriodBtn">إضافة فترة</button>
+        </section>
         <label>الأيقونة<select id="icon"><option value="fa-box">منتج</option><option value="fa-robot">ذكاء اصطناعي</option><option value="fa-palette">تصميم</option><option value="fa-code">برمجة</option><option value="fa-certificate">توثيق</option><option value="fa-graduation-cap">تعليم</option></select></label>
         <label class="toggle-label"><input id="active" type="checkbox" checked><span>إظهار المنتج في المتجر</span></label>
         <label class="toggle-label"><input id="featured" type="checkbox"><span>عرض مميز — يظهر في بداية المتجر</span></label>
