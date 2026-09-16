@@ -553,16 +553,20 @@ function renderServices() {
             if (hasMultipleOptions) {
                 let optionsMarkup = "";
                 service.options.forEach((opt, idx) => {
-                    const optName = isAr ? opt.name_ar : opt.name_en;
-                    optionsMarkup += `<option value="${idx}">${optName}</option>`;
+                    const optName = isAr ? (opt.period_ar || opt.name_ar) : (opt.period_en || opt.name_en);
+                    optionsMarkup += `<label class="period-choice">
+                        <input type="radio" name="period-${service.id}" value="${idx}" ${idx === 0 ? "checked" : ""}
+                            onchange="updateCardPrice('${service.id}', this.value)">
+                        <span class="period-choice-content"><span class="period-choice-name">${optName}</span><span class="period-choice-price" dir="ltr">$${opt.price}</span></span>
+                    </label>`;
                 });
                 optionsHTML = `
-                    <div class="service-options">
-                        <label class="options-label" for="period-select-${service.id}">${isAr ? "اختر الباقة / المدة:" : "Select Package / Duration:"}</label>
-                        <select id="period-select-${service.id}" class="selector-dropdown" onchange="updateCardPrice('${service.id}', this.value)">
+                    <fieldset class="service-options period-options">
+                        <legend class="options-label">${isAr ? "اختر مدة الاشتراك" : "Choose your duration"}</legend>
+                        <div class="period-choices">
                             ${optionsMarkup}
-                        </select>
-                    </div>
+                        </div>
+                    </fieldset>
                 `;
             }
 
@@ -724,12 +728,12 @@ window.addToCart = function(serviceId) {
     const service = servicesDatabase.find(s => s.id === serviceId);
     if (!service || Number(service.stock) === 0 || service.active === false) return;
     
-    // Check if dropdown option selector exists in card UI to get chosen tier
+    // Use the selected duration for the cart price and period.
     const cardEl = document.querySelector(`.service-card[data-id="${serviceId}"]`);
     let selectedOptionIdx = 0;
     if (cardEl) {
-        const dropdown = cardEl.querySelector(".selector-dropdown");
-        if (dropdown) selectedOptionIdx = parseInt(dropdown.value);
+        const selectedPeriod = cardEl.querySelector('.period-choice input:checked');
+        if (selectedPeriod) selectedOptionIdx = parseInt(selectedPeriod.value, 10);
     }
     
     const selectedOption = service.options[selectedOptionIdx];
